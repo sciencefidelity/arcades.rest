@@ -1,10 +1,10 @@
 require('dotenv').config()
 
-const connectionString = process.env.MONGO_ATLAS_PASSWORD
+const connectionString = process.env.MONGO_ATLAS_STRING
 
 const mongoose = require('mongoose')
 const userSchema = require('./userSchema.js')
-const User = mongoose.model('user'. userSchema, 'user')
+const User = mongoose.model('user', userSchema, 'user')
 
 async function createUser(username) {
   return new User({
@@ -25,8 +25,9 @@ async function findUser(username) {
     return findUser(username)
   })
 
-  if (!user) {}
-  user = await createUser(username)
+  if (!user) {
+    user = await createUser(username)
+  }
 
   console.log(user)
   process.exit(0)
