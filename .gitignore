@@ -1,5 +1,5 @@
 # node
-node_modules/
+node_modules
 *.log
 
 # mac
@@ -7,3 +7,6 @@ DS_Store
 .nova
 *.bak
 .env
+
+# typescript
+dist
