@@ -10,7 +10,7 @@
     "sourceMap": true,
     "outDir": "dist",
     "baseUrl": ".",
-    "types": ["node"],
+    "types": ["node", "express", "mongoose"],
     "paths": {
       "~/*": ["./src/*"],
       "@/*": ["./src/*"]

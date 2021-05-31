@@ -1,6 +1,11 @@
-import mongoose = require('mongoose')
+import { Schema } from 'mongoose'
 
-const userSchema = new mongoose.Schema({
+export interface User {
+  username: string
+  created: string
+}
+
+export const userSchema = new Schema<User>({
   username: {
     type: String,
     required: [true, 'Username is required']
@@ -10,5 +15,3 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Created date is required']
   }
 })
-
-module.exports = userSchema
