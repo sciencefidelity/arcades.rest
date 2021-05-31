@@ -10,7 +10,7 @@
     "sourceMap": true,
     "outDir": "dist",
     "baseUrl": ".",
-    "types": [],
+    "types": ["node"],
     "paths": {
       "~/*": ["./src/*"],
       "@/*": ["./src/*"]
