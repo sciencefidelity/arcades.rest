@@ -10,7 +10,8 @@
     "sourceMap": true,
     "outDir": "dist",
     "baseUrl": ".",
-    "types": ["node", "express", "mongoose"],
+    "esModuleInterop": true,
+    "types": ["node", "koa", "mongoose"],
     "paths": {
       "~/*": ["./src/*"],
       "@/*": ["./src/*"]
