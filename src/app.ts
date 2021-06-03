@@ -13,8 +13,10 @@ const pug = new Pug({
   app: app
 })
 
-router.get('/hello', async (ctx) => {
-  await ctx.render('index')
+router.get('/:name', async (ctx) => {
+  await ctx.render('index', {
+    name: ctx.params.name.charAt(0).toUpperCase() + ctx.params.name.slice(1)
+  })
 })
 
 router.get('/not_found', async (ctx) => {
