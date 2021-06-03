@@ -1,3 +1,8 @@
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
 html {
   font-size: 62.5%;
   -webkit-font-smoothing: antialiased;
@@ -13,4 +18,15 @@ body {
 p,
 div {
   font-size: 2.2rem;
+}
+
+h1 {
+  font-size: 4rem;
+  text-transform: uppercase;
+}
+
+.container {
+  padding-top: 2rem;
+  width: 88%;
+  margin: auto;
 }
