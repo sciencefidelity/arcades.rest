@@ -1,6 +1,9 @@
 doctype html
 html
-  head
-    title = "Hello Pug"
+  include head.pug
   body
-    p.greetings#people You've hit a route that doesn't exist
+    include header.pug
+    main#site-main
+      div.container
+        p You've hit a route that doesn't exist
+    include footer.pug
