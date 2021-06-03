@@ -7,8 +7,10 @@
   "main": "dist/app.js",
   "license": "UNLICENSED",
   "scripts": {
-    "dev": "nodemon --config nodemon.json src/app.ts",
+    "dev": "nodemon --config nodemon.json src/app.ts & yarn sass:watch",
     "dev:debug": "nodemon --config nodemon.json --inspect-brk src/app.ts",
+    "sass:watch": "sass --watch src/public/scss/style.scss src/public/css/style.css",
+    "sass:build": "sass src/public/scss/style.scss src/public/css/style.css",
     "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
     "build": "tsc",
     "prestart": "yarn build",

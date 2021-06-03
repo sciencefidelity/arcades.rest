@@ -6,6 +6,8 @@ node_modules
 DS_Store
 .nova
 *.bak
+*.css
+*.css.map
 .env
 
 # typescript
