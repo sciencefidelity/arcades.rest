@@ -1,29 +1,20 @@
-import koa = require('koa')
-import Router = require('koa-router')
+import Koa = require('koa')
+import path = require('path')
+import Pug from 'koa-pug'
 
-const app = new koa()
+const app = new Koa()
 const port = 3000
-const router = new Router()
 
-router.get('/hello', (ctx, next) => {
-  ctx.body = 'Hello world!'
+const pug = new Pug({
+  viewPath: path.resolve(__dirname, './views'),
+  basedir: path.resolve(__dirname, './views'),
+  app
 })
 
-router.get('/not_found', (ctx, next) => {
-  ctx.status = 404
-  ctx.body = 'You\'ve hit a route that doesn\'t exist'
+app.use(async ctx => {
+  await ctx.render('index', true)
 })
-
-const handle404Errors = (ctx: any, next: any) => {
-   if (404 != ctx.status) return;
-   ctx.redirect('/not_found');
-}
-
-app
-  .use(router.routes())
-  .use(handle404Errors)
-  .use(router.allowedMethods())
 
 app.listen(port, () => {
-console.log(`Listening at http://localhost:${port}`)
+  console.log(`Listening at http://localhost:${port}`)
 })

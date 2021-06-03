@@ -11,7 +11,14 @@
     "outDir": "dist",
     "baseUrl": ".",
     "esModuleInterop": true,
-    "types": ["node", "koa", "mongoose"],
+    "types": [
+      "node",
+      "koa",
+      "koa-router",
+      "koa-pug",
+      "koa-static",
+      "mongoose"
+    ],
     "paths": {
       "~/*": ["./src/*"],
       "@/*": ["./src/*"]
