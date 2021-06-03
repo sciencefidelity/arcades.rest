@@ -12,12 +12,12 @@
     "baseUrl": ".",
     "esModuleInterop": true,
     "types": [
-      "node",
       "koa",
-      "koa-router",
       "koa-pug",
+      "koa-router",
       "koa-static",
-      "mongoose"
+      "mongoose",
+      "node"
     ],
     "paths": {
       "~/*": ["./src/*"],
