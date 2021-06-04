@@ -2,7 +2,7 @@ import * as dotenv from 'dotenv'
 import { model, connect } from 'mongoose'
 import { User, userSchema } from './userSchema'
 
-dotenv.config({ path: __dirname+'/.env' })
+dotenv.config({ path: '.env' })
 
 const connectionString = process.env.MONGO_ATLAS_STRING
 
