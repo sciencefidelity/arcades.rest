@@ -14,6 +14,7 @@
     "types": [
       "koa",
       "koa-basic-auth",
+      "koa-compress",
       "koa-pug",
       "koa-router",
       "koa-session",

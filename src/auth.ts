@@ -2,7 +2,7 @@ import Koa from 'koa'
 import Auth from 'koa-basic-auth'
 import Router from 'koa-router'
 
-const credentials = { name: 'matt', pass: 'isnotcool' }
+const credentials = { name: 'matt', pass: 'iscool' }
 const app = new Koa()
 const port = process.env.PORT || 3000
 const router = new Router()
