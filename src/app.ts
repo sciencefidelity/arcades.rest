@@ -30,9 +30,8 @@ async function renderForm(ctx: any) {
 }
 
 const handleForm = (ctx: any) => {
-  console.log(ctx.request)
-  // console.log('Files: ', ctx.request.body.files)
-  // console.log('Fields: ', ctx.request.body.fields)
+  // console.log('Files: ', ctx.request.files)
+  console.log('Fields: ', ctx.request.body.fields)
   ctx.body = 'Recieved your data!'
 }
 
