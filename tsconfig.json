@@ -13,6 +13,7 @@
     "esModuleInterop": true,
     "types": [
       "koa",
+      "koa-basic-auth",
       "koa-pug",
       "koa-router",
       "koa-session",
