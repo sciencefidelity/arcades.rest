@@ -15,6 +15,7 @@
       "koa",
       "koa-pug",
       "koa-router",
+      "koa-session",
       "koa-static",
       "mongoose",
       "node"
