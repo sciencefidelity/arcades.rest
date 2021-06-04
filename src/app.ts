@@ -1,6 +1,8 @@
 import * as dotenv from 'dotenv'
 import Koa from 'koa'
+import Path from 'path'
 import Router from 'koa-router'
+import Pug from 'koa-pug'
 import { Schema, model, connect } from 'mongoose'
 
 dotenv.config({ path: '.env' })
@@ -51,7 +53,7 @@ async function run(): Promise<void> {
 
 router.get('/user', getUser)
 
-async function(ctx, next) {
+async function getUser(ctx: any, next: any) {
   await ctx.render('user')
 }
 
