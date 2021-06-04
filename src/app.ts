@@ -1,11 +1,21 @@
 import * as dotenv from 'dotenv'
-// import Koa from 'koa'
-// import Router from 'koa-router'
+import Koa from 'koa'
+import Router from 'koa-router'
 import { Schema, model, connect } from 'mongoose'
 
 dotenv.config({ path: '.env' })
 
+// set up middleware
+const app = new Koa()
+const port = process.env.PORT || 3000
+const router = new Router()
 const connectionString = process.env.MONGO_ATLAS_STRING
+
+const pug = new Pug({
+  viewPath: Path.resolve(__dirname, './views'),
+  basedir: Path.resolve(__dirname, './views'),
+  app: app
+})
 
 interface User {
   name: string
@@ -38,3 +48,16 @@ async function run(): Promise<void> {
 
   console.log(doc.email)
 }
+
+router.get('/user', getUser)
+
+async function(ctx, next) {
+  await ctx.render('user')
+}
+
+// start server
+app.use(router.routes())
+   .use(router.allowedMethods())
+app.listen(port, () => {
+  console.log(`Listening at http://localhost:${port}`)
+})
