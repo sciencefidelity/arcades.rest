@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv'
 import Koa from 'koa'
 import Router from 'koa-router'
-import koaBody from 'koa-body'
+import Body from 'koa-body'
 import Path from 'path'
 import Pug from 'koa-pug'
 
@@ -19,25 +19,25 @@ const pug = new Pug({
   app: app
 })
 
-app.use(koaBody({
-  formidable:{uploadDir: Path.resolve(__dirname, './uploads')},
+// set up body parsing middleware
+app.use(Body({
+  formidable:{uploadDir: './uploads'},
   multipart: true,
   urlencoded: true
 }))
 
 async function renderForm(ctx: any) {
-  await ctx.render('file_upload')
+  await ctx.render('form')
 }
 
 const handleForm = (ctx: any) => {
-  console.log(ctx.request)
-  // console.log('Files: ', ctx.request.body.files)
-  // console.log('Fields: ', ctx.request.body.fields)
-  ctx.body = 'Recieved your data!'
+  console.log(ctx.request.body)
+  console.log(ctx.req.body)
+  ctx.body = ctx.request.body
 }
 
-router.get('/files', renderForm)
-router.post('/upload', koaBody(), handleForm)
+router.get('/', renderForm)
+router.post('/', handleForm)
 
 // start server
 app.use(router.routes())

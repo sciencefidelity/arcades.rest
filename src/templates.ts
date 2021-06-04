@@ -21,7 +21,7 @@ const pug = new Pug({
 })
 
 // load stylesheet
-const styles = Path.resolve(__dirname, './views/css/style.css')
+const styles = Path.resolve(__dirname, './public/style.css')
 
 // set up routes
 router.get('/:name', async (ctx) => {

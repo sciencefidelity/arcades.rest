@@ -12,3 +12,6 @@ DS_Store
 
 # typescript
 dist
+
+# app
+uploads
