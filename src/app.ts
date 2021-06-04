@@ -4,8 +4,10 @@ import Session from 'koa-session'
 const app = new Koa()
 const port = process.env.PORT || 3000
 
+const CONFIG = {}
+
 app.keys = [ 'A super secret key.' ]
-app.use(Session(app))
+app.use(Session(CONFIG, app))
 
 app.use(ctx => {
   if (ctx.path === '/favicon.ico') return
