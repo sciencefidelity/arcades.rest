@@ -1,27 +1,24 @@
 import * as dotenv from 'dotenv'
 import Koa from 'koa'
 import Router from 'koa-router'
-import Body from 'koa-body'
-import { model, connect } from 'mongoose'
-import { User, userSchema } from './userSchema'
+import koaBody from 'koa-body'
+import { connect, connection } from 'mongoose'
+import routing from './routes'
 
 dotenv.config({ path: '.env' })
+
+// connect to database
+const connectionString = process.env.MONGO_ATLAS_STRING
+connect(connectionString!)
+connection.on('error', console.error)
 
 const app = new Koa()
 const port = process.env.PORT
 const router = new Router
-const connectionString = process.env.MONGO_ATLAS_STRING
-const UserModel = model<User>('User', userSchema)
 
-// connect to database
-router.get('/', async (req, res) => {
-  try {
-    const users = await UserModel.find()
-    res.json(User)
-  } catch (err) {
-    res.status(500).json({message: err.message})
-  }
-})
+app.use(koaBody())
+
+routing(app)
 
 // start server
 app.listen(port, () => {

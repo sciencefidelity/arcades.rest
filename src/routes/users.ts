@@ -1,12 +1,10 @@
 import Router from 'koa-router'
+import UsersControllers from '../controllers/users'
 
 const router = new Router()
 
-module.exports = app => {
-  router.get('/users', (req:any, res:any, next:any) => {
-    res.send({ msg: 'test' })
-  })
-}
+router.prefix(`/api/${api}`)
 
-app.use(router.routes())
-   .use(router.allowedMethods())
+router.get('/', UsersControllers.find)
+
+export default router
