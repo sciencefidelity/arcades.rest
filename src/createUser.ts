@@ -1,12 +1,10 @@
 import * as dotenv from 'dotenv'
-import { model, connect } from 'mongoose'
-import { User, userSchema } from './userSchema'
+import { connect } from 'mongoose'
+import { UserModel } from './userSchema'
 
 dotenv.config({ path: '.env' })
 
 const connectionString = process.env.MONGO_ATLAS_STRING
-
-const UserModel = model<User>('User', userSchema)
 
 async function createUser(username:string) {
   return new UserModel({
