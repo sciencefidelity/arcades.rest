@@ -12,6 +12,7 @@
     "baseUrl": ".",
     "esModuleInterop": true,
     "types": [
+      "glob",
       "koa",
       "koa-basic-auth",
       "koa-compress",
