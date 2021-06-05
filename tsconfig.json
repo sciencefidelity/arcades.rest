@@ -19,6 +19,7 @@
       "koa-router",
       "koa-session",
       "koa-static",
+      "koa-static-cache",
       "mongoose",
       "node"
     ],
