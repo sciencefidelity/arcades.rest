@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose'
+import { Schema } from 'mongoose'
 
 export interface User {
   username: string
@@ -22,5 +22,3 @@ export const userSchema = new Schema<User>({
     required: [true, 'Created date is required']
   }
 })
-
-export const UserModel = model<User>('User', userSchema)
