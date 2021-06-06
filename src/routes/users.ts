@@ -64,4 +64,19 @@ router.put('/:id', async (ctx, next) => {
   }
 })
 
+router.delete('/:id', async (ctx, next) => {
+  try {
+    const user = await userModel.findByIdAndRemove(ctx.params.id)
+    if (!user) {
+      ctx.throw(404)
+    }
+    ctx.body = user
+  } catch (err) {
+    if (err.name === 'CastError' || err.name === 'NotFoundError') {
+      ctx.throw(404)
+    }
+    ctx.throw(500)
+  }
+})
+
 export default router
