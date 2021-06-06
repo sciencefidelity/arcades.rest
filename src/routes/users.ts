@@ -32,6 +32,10 @@ router.get('/:id', async (ctx, next) => {
 
 // add user
 router.post('/', async (ctx, next) => {
+  if(!ctx.is('application/json')) {
+    ctx.throw(422)
+    ctx.body = 'Expects \'application/json\''
+  }
   try {
     const user = new userModel({
       username: ctx.request.body.username,
@@ -41,7 +45,7 @@ router.post('/', async (ctx, next) => {
     }).save()
     ctx.body = user
   } catch (err) {
-    ctx.throw(422);
+    ctx.throw(422)
   }
 })
 
@@ -64,6 +68,7 @@ router.put('/:id', async (ctx, next) => {
   }
 })
 
+// delete a user
 router.delete('/:id', async (ctx, next) => {
   try {
     const user = await userModel.findByIdAndRemove(ctx.params.id)
