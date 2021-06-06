@@ -1,13 +1,10 @@
 import Router from 'koa-router'
-
 import * as arcades from '../data/example.json'
 
-const router = new Router()
+const router = new Router({ prefix: '/arcades' })
 
-const sendArcades = (ctx:any, next:any) => {
+router.get('/', async (ctx, next) => {
   ctx.body = arcades
-}
+})
 
-router.get('/arcades', sendArcades)
-
-export default arcades
+export default router

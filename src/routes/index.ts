@@ -1,13 +1,8 @@
-import routesLoader from '../utils/routesLoader'
+import Router from 'koa-router'
+const router = new Router()
 
-export default function(app:any) {
-  routesLoader(`${__dirname}`).then((files:any) => {
-    files.forEach((route:any) => {
-      app.use(route.routes()).use(
-        route.allowedMethods({
-          throw: true
-        })
-      )
-    })
-  })
-}
+router.get('/', async (ctx, next) => {
+  ctx.body = { msg: 'Hello world!' }
+})
+
+export default router
