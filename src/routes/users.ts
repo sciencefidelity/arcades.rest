@@ -14,6 +14,22 @@ router.get('/', async (ctx, next) => {
   }
 })
 
+// find a user by id
+router.get('/:id', async (ctx, next) => {
+  try {
+    const user = await userModel.findById(ctx.params.id)
+    if (!user) {
+      ctx.throw(404)
+    }
+    ctx.body = user
+  } catch (err) {
+    if (err.name === 'CastError' || err.name === 'NotFoundError') {
+      ctx.throw(404)
+    }
+    ctx.throw(500)
+  }
+})
+
 // add user
 router.post('/', async (ctx, next) => {
   try {
@@ -26,6 +42,25 @@ router.post('/', async (ctx, next) => {
     ctx.body = user
   } catch (err) {
     ctx.throw(422);
+  }
+})
+
+// update a user
+router.put('/:id', async (ctx, next) => {
+  try {
+    const user = await userModel.findByIdAndUpdate(
+      ctx.params.id,
+      ctx.request.body
+    )
+    if (!user) {
+      ctx.throw(404)
+    }
+    ctx.body = user
+  } catch (err) {
+    if (err.name === 'CastError' || err.name === 'NotFoundError') {
+      ctx.throw(404)
+    }
+    ctx.throw(500)
   }
 })
 
