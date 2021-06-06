@@ -1,8 +1,4 @@
-import mongoose from 'mongoose'
-
-const { Schema } = mongoose
-
-mongoose.Promise = global.Promise
+import { Schema, model } from 'mongoose'
 
 interface User {
   username: string
@@ -27,4 +23,4 @@ const userSchema = new Schema<User>({
   }
 })
 
-export default mongoose.model('UserModel', userSchema)
+export const userModel = model<User>('User', userSchema)

@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv'
 import { connect } from 'mongoose'
-import UserModel from '../models/userSchema'
+import { userModel } from '../models/userSchema'
 
 dotenv.config({ path: '.env' })
 
@@ -14,7 +14,7 @@ async function run(): Promise<void> {
     useUnifiedTopology: true
   })
 
-  const doc = new UserModel({
+  const doc = new userModel({
     username: 'john',
     email: 'john@johnis.blue',
     avatar: 'https://i.imgur.com/dM7Thhn.png',
