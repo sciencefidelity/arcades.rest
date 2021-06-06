@@ -1,24 +1,30 @@
 import * as dotenv from 'dotenv'
 import Koa from 'koa'
 import koaBody from 'koa-body'
-import { connect, connection } from 'mongoose'
-import routing from './routes'
+// import { connect, connection } from 'mongoose'
+// import arcades from './routes/arcades'
 
 dotenv.config({ path: '.env' })
-
-// connect to database
-const connectionString = process.env.MONGO_ATLAS_STRING
-connect(connectionString!, { useNewUrlParser: true })
-connection.on('error', console.error)
 
 const app = new Koa()
 const port = process.env.PORT
 
-app.use(koaBody())
+// connect to database
+// const connectionString = process.env.MONGO_ATLAS_STRING
+// connect(connectionString!, {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true
+// })
+// connection.on('error', console.error)
 
-routing(app)
+app.use(koaBody({
+  formidable:{uploadDir: './uploads'},
+  multipart: true,
+  urlencoded: true
+}))
 
 // start server
 app.listen(port, () => {
+  require('./routes/arcades')(app)
   console.log(`Listening at http://localhost:${port}`)
 })

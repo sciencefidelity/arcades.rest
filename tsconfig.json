@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
-    "moduleResolution": "node",
     "module": "commonjs",
     "target": "es6",
+    "strict": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
     "baseUrl": ".",
     "allowJs": true,
     "checkJs": false,
-    "strict": true,
     "sourceMap": true,
     "outDir": "dist",
     "baseUrl": ".",

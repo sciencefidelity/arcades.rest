@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv'
 import { connect } from 'mongoose'
-import { UserModel } from './userSchema'
+import UserModel from '../models/userSchema'
 
 dotenv.config({ path: '.env' })
 
