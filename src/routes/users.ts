@@ -13,7 +13,7 @@ router.get('/', async (ctx, next) => {
     ctx.app.emit('error', err, ctx)
   }
 })
-;
+
 // find a user by id
 router.get('/:id', async (ctx, next) => {
   try {
@@ -30,11 +30,27 @@ router.get('/:id', async (ctx, next) => {
   }
 })
 
-// find by username in url
+// find by username in url, only show username
 router.get('/username/:name', async (ctx, next) => {
   try {
-    const user = await userModel.findOne({ username: ctx.params.name })
+    const user = await userModel.find({ username: ctx.params.name }, 'username')
     if (!user) {
+      ctx.throw(404)
+    }
+    ctx.body = user
+  } catch (err) {
+    if (err.name === 'CastError' || err.name === 'NotFoundError') {
+      ctx.throw(404)
+    }
+    ctx.throw(500)
+  }
+})
+
+// find by username or email in json
+router.post('/find', async (ctx, next) => {
+  try {
+    const user = await userModel.find({ $or: [{ username: ctx.request.body.username }, { email: ctx.request.body.email }] })
+    if (user === []) {
       ctx.throw(404)
     }
     ctx.body = user
