@@ -2,10 +2,11 @@ import * as dotenv from 'dotenv'
 import Koa from 'koa'
 import Mongoose from 'mongoose'
 import koaBody from 'koa-body'
+import error from 'koa-json-error'
+
 import mainRoute from './routes/index'
 import arcadesRoute from './routes/arcades'
 import usersRoute from './routes/users'
-import error from 'koa-json-error'
 
 dotenv.config({ path: '.env' })
 
