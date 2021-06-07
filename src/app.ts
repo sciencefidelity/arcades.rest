@@ -5,6 +5,7 @@ import koaBody from 'koa-body'
 import mainRoute from './routes/index'
 import arcadesRoute from './routes/arcades'
 import usersRoute from './routes/users'
+import error from 'koa-json-error'
 
 dotenv.config({ path: '.env' })
 
@@ -31,6 +32,7 @@ app.use(mainRoute.routes())
    .use(arcadesRoute.allowedMethods())
    .use(usersRoute.routes())
    .use(usersRoute.allowedMethods())
+   .use(error())
 
 // start server
 app.listen(port, () => {
