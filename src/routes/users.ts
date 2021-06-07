@@ -49,10 +49,11 @@ router.get('/username/:name', async (ctx, next) => {
 // find by username or email in json
 router.post('/find', async (ctx, next) => {
   try {
-    const user = await userModel.find({ $or: [{ username: ctx.request.body.username }, { email: ctx.request.body.email }] })
-    if (user === []) {
+    const user = await userModel.findOne({ $or: [{ username: ctx.request.body.username }, { email: ctx.request.body.email }] })
+    if (!user) {
       ctx.throw(404)
     }
+
     ctx.body = user
   } catch (err) {
     if (err.name === 'CastError' || err.name === 'NotFoundError') {
@@ -62,20 +63,41 @@ router.post('/find', async (ctx, next) => {
   }
 })
 
-// add user
+//***** add user *****
+
 router.post('/', async (ctx, next) => {
+
+const username = ctx.request.body.username
+const email = ctx.request.body.email
+const avatar = ctx.request.body.avatar
+
+// check if data is application/json
   if(!ctx.is('application/json')) {
     ctx.throw(422)
     ctx.body = 'Expects \'application/json\''
+    console.log('Expects \'application/json\'')
   }
+
   try {
-    const user = new userModel({
-      username: ctx.request.body.username,
-      email: ctx.request.body.email,
-      avatar: ctx.request.body.avatar,
-      created: Date.now()
-    }).save()
+// check if user exists before creating
+    const user = await userModel
+      .findOne({ $or: [{ username }, { email }] })
+
+    if(user) {
+      console.log('User already exists.')
+    }
+
+// if user doesn't exist - create user
+    if(!user) {
+      new userModel({
+        username, email, avatar,
+        created: Date.now()
+      }).save()
+      console.log('User created.')
+    }
     ctx.body = user
+
+// error handling
   } catch (err) {
     ctx.throw(422)
   }
