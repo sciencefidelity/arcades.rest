@@ -9,8 +9,6 @@ router.get('/', async (ctx, next) => {
     ctx.body = await userModel.find({})
   } catch (err) {
     ctx.status = err.status || 500
-    ctx.body = err.message
-    ctx.app.emit('error', err, ctx)
   }
 })
 
@@ -76,8 +74,7 @@ router.post('/find', async (ctx, next) => {
   }
 })
 
-//***** add user *****
-
+// add a user
 router.post('/', async (ctx, next) => {
 
 const username = ctx.request.body.username
@@ -147,13 +144,18 @@ router.delete('/:id', async (ctx, next) => {
 })
 
 // delete a user by username or email
-router.delete('/', async (ctx, next) => {
+router.put('/', async (ctx, next) => {
   const username = ctx.request.body.username
   const email = ctx.request.body.email
 
   let errorMessage = `user ${username} not found`
   if (!ctx.request.body.username) {
     errorMessage = `email address ${email} not found`
+  }
+
+  // check if data is application/json
+  if(!ctx.is('application/json')) {
+    ctx.throw(412, 'Content-Type must be application/json')
   }
 
   try {
