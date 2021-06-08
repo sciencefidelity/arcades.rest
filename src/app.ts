@@ -14,7 +14,8 @@ const connectionString = process.env.MONGO_ATLAS_STRING
 
 Mongoose.connect(connectionString!, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  useFindAndModify: false
 })
 Mongoose.connection.on('error', console.error)
 
