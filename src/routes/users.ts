@@ -94,7 +94,7 @@ const email = ctx.request.body.email
 // if user doesn't exist - create user
     if(!user) {
       user = await new userModel(
-        _.extend(ctx.request.body, {created: Date.now()})
+        _.extend(ctx.request.body, { created: Date.now() })
       ).save()
       ctx.status = 201
     }

@@ -23,7 +23,8 @@
       "koa-static",
       "koa-static-cache",
       "mongoose",
-      "node"
+      "node",
+      "underscore"
     ],
     "paths": {
       "~/*": ["./src/*"],
