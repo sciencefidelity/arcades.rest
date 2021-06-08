@@ -1,4 +1,5 @@
 import Router from 'koa-router'
+import _ from 'underscore'
 import { userModel } from '../models/userSchema'
 
 const router = new Router({ prefix: '/users' })
@@ -22,7 +23,7 @@ router.get('/:id', async (ctx, next) => {
     ctx.body = user
   } catch (err) {
     if (err.name === 'CastError' || err.name === 'NotFoundError') {
-      ctx.throw(404, `there is no user with the id ${ctx.params.id}`)
+      ctx.throw(404, `user with the id ${ctx.params.id} not found`)
     }
     ctx.throw(500)
   }
@@ -33,12 +34,12 @@ router.get('/username/:name', async (ctx, next) => {
   try {
     const user = await userModel.find({ username: ctx.params.name }, 'username')
     if (!user) {
-      ctx.throw(404, `username ${ctx.params.name} not found`)
+      ctx.throw(404)
     }
     ctx.body = user
   } catch (err) {
     if (err.name === 'CastError' || err.name === 'NotFoundError') {
-      ctx.throw(404)
+      ctx.throw(404, `username ${ctx.params.name} not found`)
     }
     ctx.throw(500)
   }
@@ -79,11 +80,10 @@ router.post('/', async (ctx, next) => {
 
 const username = ctx.request.body.username
 const email = ctx.request.body.email
-const avatar = ctx.request.body.avatar
 
 // check if data is application/json
   if(!ctx.is('application/json')) {
-    ctx.throw(412, 'Content-Type must be application/json')
+    ctx.throw(412, 'content-Type must be application/json')
   }
 
   try {
@@ -93,10 +93,9 @@ const avatar = ctx.request.body.avatar
 
 // if user doesn't exist - create user
     if(!user) {
-      user = await new userModel({
-        username, email, avatar,
-        created: Date.now()
-      }).save()
+      user = await new userModel(
+        _.extend(ctx.request.body, {created: Date.now()})
+      ).save()
       ctx.status = 201
     }
 
@@ -104,7 +103,7 @@ const avatar = ctx.request.body.avatar
 
 // error handling
   } catch (err) {
-    ctx.throw(422)
+    ctx.throw(422, 'missing content')
   }
 })
 
@@ -137,7 +136,7 @@ router.delete('/:id', async (ctx, next) => {
     ctx.body = user
   } catch (err) {
     if (err.name === 'CastError' || err.name === 'NotFoundError') {
-      ctx.throw(404)
+      ctx.throw(404, `user with the id ${ctx.params.id} not found`)
     }
     ctx.throw(500)
   }
@@ -155,7 +154,7 @@ router.put('/', async (ctx, next) => {
 
   // check if data is application/json
   if(!ctx.is('application/json')) {
-    ctx.throw(412, 'Content-Type must be application/json')
+    ctx.throw(412, 'content-Type must be application/json')
   }
 
   try {
