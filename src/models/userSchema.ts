@@ -29,7 +29,8 @@ const userSchema = new Schema<User>({
   email: {
     type: String,
     required: [true, 'email address is required'],
-    strict: true
+    strict: true,
+    trim: true
   },
   password: {
     type: String,

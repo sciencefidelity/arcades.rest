@@ -80,8 +80,7 @@ router.post('/find', async (ctx, next) => {
 // add a user
 router.post('/', async (ctx, next) => {
 
-const username = ctx.request.body.username
-const email = ctx.request.body.email
+const data = ctx.request.body
 
 // check if data is application/json
   if(!ctx.is('application/json')) {
@@ -90,8 +89,10 @@ const email = ctx.request.body.email
 
   try {
 // check if user exists before creating
-    let user = await userModel
-      .findOne({ $or: [{ username }, { email }] })
+    let user = await userModel.findOne({ $or: [
+      { username: data.username },
+      { email: data.email }
+    ]})
 
 // if user doesn't exist - create user
     if(!user) {
@@ -147,12 +148,11 @@ router.delete('/:id', async (ctx, next) => {
 // delete a user by username or email
 router.put('/', async (ctx, next) => {
 
-  const username = ctx.request.body.username
-  const email = ctx.request.body.email
+  const data = ctx.request.body
 
-  let errorMessage = `user ${username} not found`
-  if (!username) {
-    errorMessage = `email address ${email} not found`
+  let errorMessage = `user ${data.username} not found`
+  if (!data.username) {
+    errorMessage = `email address ${data.email} not found`
   }
 
   // check if data is application/json
@@ -161,8 +161,10 @@ router.put('/', async (ctx, next) => {
   }
 
   try {
-    const user = await userModel
-      .findOneAndRemove({ $or: [{ username }, { email }] })
+    const user = await userModel.findOneAndRemove({ $or: [
+      { username: data.username },
+      { email: data.email }
+    ]})
 
     if (!user) {
       ctx.throw(404)
