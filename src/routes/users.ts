@@ -1,8 +1,9 @@
 import Router from 'koa-router'
-import { scrypt, randomBytes } from 'crypto'
-// import bcrypt from 'bcryptjs'
+// import { scrypt, randomBytes } from 'crypto'
+import bcrypt from 'bcryptjs'
 import _ from 'underscore'
 import { userModel } from '../models/userSchema'
+import auth from '../auth/auth'
 
 const router = new Router({ prefix: '/users' })
 
@@ -100,28 +101,27 @@ router.post('/', async (ctx, next) => {
     if(!user) {
 
       // hash password (scrypt)
-      async function hash(password:string) {
-        return new Promise((resolve, reject) => {
-          const salt = randomBytes(16).toString('hex')
-
-          scrypt(password, salt, 64, async (err, derivedKey) => {
-            if (err) reject(err)
-            resolve(`${salt}:${derivedKey.toString('hex')}`)
-          })
-        })
-      }
-
-      // hash password (bcrypt)
       // async function hash(password:string) {
       //   return new Promise((resolve, reject) => {
-      //     bcrypt.genSalt(10, (err, salt) => {
-      //       bcrypt.hash(password, salt, (err, hash) => {
-      //         if (err) reject(err)
-      //         resolve(hash)
-      //       })
+      //     const salt = randomBytes(16).toString('hex')
+      //     scrypt(password, salt, 64, async (err, derivedKey) => {
+      //       if (err) reject(err)
+      //       resolve(`${salt}:${derivedKey.toString('hex')}`)
       //     })
       //   })
       // }
+
+      // hash password (bcrypt)
+      async function hash(password:string) {
+        return new Promise((resolve, reject) => {
+          bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(password, salt, (err, hash) => {
+              if (err) reject(err)
+              resolve(hash)
+            })
+          })
+        })
+      }
 
       password = await hash(password)
       user = await new userModel(
@@ -206,6 +206,18 @@ router.put('/', async (ctx, next) => {
     }
     ctx.throw(500)
   }
+})
+
+// auth user
+router.post('/auth', async (ctx, next) => {
+  const { email, password } = ctx.request.body
+  try {
+    const user = auth(email, password)
+  } catch(err) {
+    // user unauthorised
+    ctx.throw(500, 'unauthorised')
+  }
+
 })
 
 export default router

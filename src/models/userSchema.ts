@@ -1,6 +1,6 @@
-import { Schema, model } from 'mongoose'
+import { Schema, model, Document } from 'mongoose'
 
-interface User {
+export interface User extends Document {
   firstName: String
   lastName: String
   username: string
@@ -11,38 +11,16 @@ interface User {
 }
 
 const userSchema = new Schema<User>({
-  firstName: {
-    type: String,
-    required: [true, 'first name is required'],
-    strict: true
-  },
-  lastName: {
-    type: String,
-    required: [true, 'last name is required'],
-    strict: true
-  },
-  username: {
-    type: String,
-    required: [true, 'username is required'],
-    strict: true
-  },
+  firstName: String,
+  lastName: String,
+  username: String,
   email: {
     type: String,
-    required: [true, 'email address is required'],
-    strict: true,
     trim: true
   },
-  password: {
-    type: String,
-    required: [true, 'password is required'],
-    strict: true
-  },
+  password: String,
   avatar: String,
-  created: {
-    type: Date,
-    required: true,
-    strict: true
-  }
+  created: Date
 })
 
-export const userModel = model<User>('User', userSchema)
+export const userModel = model<User & Document>('User', userSchema)
