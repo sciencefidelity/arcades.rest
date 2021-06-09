@@ -12,6 +12,7 @@
     "outDir": "dist",
     "baseUrl": ".",
     "esModuleInterop": true,
+    "experimentalDecorators": true,
     "types": [
       "bcryptjs",
       "glob",
