@@ -1,4 +1,5 @@
 import Router from 'koa-router'
+import { scrypt, randomBytes } from 'crypto'
 import _ from 'underscore'
 import { userModel } from '../models/userSchema'
 
@@ -48,18 +49,18 @@ router.get('/username/:name', async (ctx, next) => {
 // find by username or email in json
 router.post('/find', async (ctx, next) => {
 
-  const data = ctx.request.body
+  const { username, email } = ctx.request.body
 
-  let errorMessage = `user ${data.username} not found`
-  if (!data.username) {
-    errorMessage = `email address ${data.email} not found`
+  let errorMessage = `user ${username} not found`
+  if (!username) {
+    errorMessage = `email address ${email} not found`
   }
 
   try {
     const user = await userModel
       .findOne({ $or: [
-        { username: data.username },
-        { email: data.email }
+        { username },
+        { email }
       ]})
 
     if (!user) {
@@ -80,31 +81,39 @@ router.post('/find', async (ctx, next) => {
 // add a user
 router.post('/', async (ctx, next) => {
 
-const data = ctx.request.body
+let { username, email, password } = ctx.request.body
 
-// check if data is application/json
+  // check if data is application/json
   if(!ctx.is('application/json')) {
     ctx.throw(412, 'content-Type must be application/json')
   }
 
   try {
-// check if user exists before creating
-    let user = await userModel.findOne({ $or: [
-      { username: data.username },
-      { email: data.email }
+    // check if user exists before creating
+    const user = await userModel.findOne({ $or: [
+      { username },
+      { email }
     ]})
 
-// if user doesn't exist - create user
+    // if user doesn't exist - create user
     if(!user) {
-      user = await new userModel(
-        _.extend(ctx.request.body, { created: Date.now() })
-      ).save()
-      ctx.status = 201
-    }
 
+      // hash password
+      const salt = randomBytes(16).toString('hex')
+      scrypt(password, salt, 64, async (err, hash) => {
+        if (err) throw(err)
+        password = hash.toString('hex')
+        const newUser = await new userModel(
+          _.extend(ctx.request.body,
+          { password, created: Date.now() }
+        )).save()
+        ctx.body = newUser
+        ctx.status = 201
+      })
+    }
     ctx.body = user
 
-// error handling
+  // error handling
   } catch (err) {
     ctx.throw(422, 'missing content')
   }
@@ -148,11 +157,11 @@ router.delete('/:id', async (ctx, next) => {
 // delete a user by username or email
 router.put('/', async (ctx, next) => {
 
-  const data = ctx.request.body
+  const { username, email } = ctx.request.body
 
-  let errorMessage = `user ${data.username} not found`
-  if (!data.username) {
-    errorMessage = `email address ${data.email} not found`
+  let errorMessage = `user ${username} not found`
+  if (!username) {
+    errorMessage = `email address ${email} not found`
   }
 
   // check if data is application/json
@@ -162,8 +171,8 @@ router.put('/', async (ctx, next) => {
 
   try {
     const user = await userModel.findOneAndRemove({ $or: [
-      { username: data.username },
-      { email: data.email }
+      { username },
+      { email }
     ]})
 
     if (!user) {
