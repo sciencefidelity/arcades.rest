@@ -13,6 +13,7 @@
     "baseUrl": ".",
     "esModuleInterop": true,
     "types": [
+      "bcryptjs",
       "glob",
       "koa",
       "koa-basic-auth",
