@@ -1,6 +1,6 @@
 import Router from 'koa-router'
-// import { scrypt, randomBytes } from 'crypto'
-import bcrypt from 'bcryptjs'
+import { scrypt, randomBytes } from 'crypto'
+// import bcrypt from 'bcryptjs'
 import _ from 'underscore'
 import { userModel } from '../models/userSchema'
 
@@ -100,34 +100,33 @@ router.post('/', async (ctx, next) => {
     if(!user) {
 
       // hash password (scrypt)
-      // const salt = randomBytes(16).toString('hex')
-      // scrypt(password, salt, 64, async (err, hash) => {
-      //   if (err) throw(err)
-      //   password = hash.toString('hex')
-      //   const newUser = await new userModel(
-      //     _.extend(ctx.request.body,
-      //     { password, created: Date.now() }
-      //   )).save()
-      //   ctx.body = newUser
-      //   ctx.status = 201
-      // })
-
-      // hash password (bcrypt)
       async function hash(password:string) {
         return new Promise((resolve, reject) => {
-          bcrypt.genSalt(10, (err, salt) => {
-            bcrypt.hash(password, salt, (err, hash) => {
-              if (err) reject(err)
-              resolve(password = hash)
-            })
+          const salt = randomBytes(16).toString('hex')
+
+          scrypt(password, salt, 64, async (err, derivedKey) => {
+            if (err) reject(err)
+            resolve(`${salt}:${derivedKey.toString('hex')}`)
           })
         })
       }
 
-      const hashPass = await hash(password)
+      // hash password (bcrypt)
+      // async function hash(password:string) {
+      //   return new Promise((resolve, reject) => {
+      //     bcrypt.genSalt(10, (err, salt) => {
+      //       bcrypt.hash(password, salt, (err, hash) => {
+      //         if (err) reject(err)
+      //         resolve(hash)
+      //       })
+      //     })
+      //   })
+      // }
+
+      password = await hash(password)
       user = await new userModel(
         _.extend(ctx.request.body,
-        { password: hashPass, created: Date.now() }
+        { password, created: Date.now() }
       )).save()
       ctx.status = 201
     }
