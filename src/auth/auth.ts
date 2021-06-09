@@ -1,5 +1,5 @@
 import { compare } from 'bcryptjs'
-import { UserModel } from '../models/userSchema'
+import UserModel from '../models/userSchema'
 // import * as mongoose from 'mongoose'
 // const UserModel = mongoose.model('User')
 

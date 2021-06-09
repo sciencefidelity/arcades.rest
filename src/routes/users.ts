@@ -2,7 +2,7 @@ import Router from 'koa-router'
 // import { scrypt, randomBytes } from 'crypto'
 import bcrypt from 'bcryptjs'
 import _ from 'underscore'
-import { UserModel } from '../models/userSchema'
+import UserModel from '../models/userSchema'
 import { Authenticate } from '../auth/auth'
 
 const router = new Router({ prefix: '/users' })

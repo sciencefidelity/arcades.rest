@@ -7,22 +7,38 @@ export interface IUser extends Document {
   email: string
   password: string
   avatar?: string
-  created: string
+  created: Date
 }
 
-interface IUserDoc extends Document, IUser {}
+// interface IUserDoc extends Document, IUser {}
 
 const UserSchema = new mongoose.Schema({
-  firstName: String,
-  lastName: String,
-  username: String,
+  firstName: {
+    type: String,
+    required: true
+  },
+  lastName: {
+    type: String,
+    required: true
+  },
+  username: {
+    type: String,
+    required: true
+  },
   email: {
     type: String,
+    required: true,
     trim: true
   },
-  password: String,
+  password: {
+    type: String,
+    required: true
+  },
   avatar: String,
-  created: Date
+  created: {
+    type: Date,
+    required: true
+  }
 })
 
-export const UserModel = mongoose.model<IUserDoc>('User', UserSchema)
+export default mongoose.model<IUser>('User', UserSchema)
