@@ -1,14 +1,15 @@
 // import { compare } from 'bcryptjs'
 // import { model, Document } from 'mongoose'
 // const User = model<Document>('User')
-import { userModel } from '../models/userSchema'
+import UserModel from '../models/userSchema'
 
 const auth = (email:string, password:string) => {
   return new Promise(async (resolve, reject) => {
     try {
       //get user by email
-      const user = await userModel.find({ email })
-      console.log(user)
+      const user = await UserModel.findOne({ email })
+
+      console.log(user!.password)
       // match password
       // compare(password, user.password, (err, result) => {
       //   if(err) throw err

@@ -2,7 +2,7 @@ import Router from 'koa-router'
 // import { scrypt, randomBytes } from 'crypto'
 import bcrypt from 'bcryptjs'
 import _ from 'underscore'
-import { userModel } from '../models/userSchema'
+import UserModel from '../models/userSchema'
 import auth from '../auth/auth'
 
 const router = new Router({ prefix: '/users' })
@@ -10,7 +10,7 @@ const router = new Router({ prefix: '/users' })
 // get users
 router.get('/', async (ctx, next) => {
   try {
-    ctx.body = await userModel.find({})
+    ctx.body = await UserModel.find({})
   } catch (err) {
     ctx.status = err.status || 500
   }
@@ -19,7 +19,7 @@ router.get('/', async (ctx, next) => {
 // find a user by id
 router.get('/:id', async (ctx, next) => {
   try {
-    const user = await userModel.findById(ctx.params.id)
+    const user = await UserModel.findById(ctx.params.id)
     if (!user) {
       ctx.throw(404)
     }
@@ -35,7 +35,7 @@ router.get('/:id', async (ctx, next) => {
 // find by username in url, only show username
 router.get('/username/:name', async (ctx, next) => {
   try {
-    const user = await userModel.find({ username: ctx.params.name }, 'username')
+    const user = await UserModel.find({ username: ctx.params.name }, 'username')
     if (!user) {
       ctx.throw(404)
     }
@@ -59,7 +59,7 @@ router.post('/find', async (ctx, next) => {
   }
 
   try {
-    const user = await userModel
+    const user = await UserModel
       .findOne({ $or: [
         { username },
         { email }
@@ -92,7 +92,7 @@ router.post('/', async (ctx, next) => {
 
   try {
     // check if user exists before creating
-    let user = await userModel.findOne({ $or: [
+    let user = await UserModel.findOne({ $or: [
       { username },
       { email }
     ]})
@@ -124,7 +124,7 @@ router.post('/', async (ctx, next) => {
       }
 
       password = await hash(password)
-      user = await new userModel(
+      user = await new UserModel(
         _.extend(ctx.request.body,
         { password, created: Date.now() }
       )).save()
@@ -142,7 +142,7 @@ router.post('/', async (ctx, next) => {
 // update a user
 router.put('/:id', async (ctx, next) => {
   try {
-    const user = await userModel.findByIdAndUpdate(
+    const user = await UserModel.findByIdAndUpdate(
       ctx.params.id,
       ctx.request.body
     )
@@ -161,7 +161,7 @@ router.put('/:id', async (ctx, next) => {
 // delete a user
 router.delete('/:id', async (ctx, next) => {
   try {
-    const user = await userModel.findByIdAndRemove(ctx.params.id)
+    const user = await UserModel.findByIdAndRemove(ctx.params.id)
     if (!user) {
       ctx.throw(404)
     }
@@ -190,7 +190,7 @@ router.put('/', async (ctx, next) => {
   }
 
   try {
-    const user = await userModel.findOneAndRemove({ $or: [
+    const user = await UserModel.findOneAndRemove({ $or: [
       { username },
       { email }
     ]})
