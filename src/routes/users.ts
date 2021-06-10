@@ -126,9 +126,7 @@ router.post('/', async (ctx, next) => {
 
       password = await hash(password)
       user = await new userModel(
-        _.extend(ctx.request.body,
-        { password, created: Date.now() }
-      )).save()
+        _.extend(ctx.request.body, { password })).save()
       ctx.status = 201
     }
 
@@ -150,10 +148,10 @@ router.put('/:id', async (ctx, next) => {
     if (!user) {
       ctx.throw(404)
     }
-    ctx.body = user
+    ctx.body = await userModel.findById(ctx.params.id)
   } catch (err) {
     if (err.name === 'CastError' || err.name === 'NotFoundError') {
-      ctx.throw(404)
+      ctx.throw(404, `user with the id ${ctx.params.id} not found`)
     }
     ctx.throw(500)
   }
