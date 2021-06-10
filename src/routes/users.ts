@@ -1,4 +1,4 @@
-import * as dotenv from 'dotenv'
+// import * as dotenv from 'dotenv'
 import Router from 'koa-router'
 import jwt from 'jsonwebtoken'
 // import { scrypt, randomBytes } from 'crypto'
@@ -7,7 +7,7 @@ import _ from 'underscore'
 import { userModel } from '../models/userSchema'
 import { Authenticate } from '../auth/auth'
 
-dotenv.config({ path: '.env' })
+// dotenv.config({ path: '.env' })
 const router = new Router({ prefix: '/users' })
 
 // get all users
@@ -222,7 +222,7 @@ router.post('/auth', async (ctx, next) => {
         process.env.JWT_SECRET, {expiresIn: '15m'})
 
     const { iat, exp } = jwt.decode(token)
-    caches.tx
+    ctx.body = { iat, exp, token }
 
   } catch(err) {
     // user unauthorised
