@@ -33,18 +33,12 @@ router.get('/:id', async (ctx, next) => {
   }
 })
 
-// find by username in url, only show username
+// find by username in url
 router.get('/username/:name', async (ctx, next) => {
   try {
-    const user = await userModel.find({ username: ctx.params.name }, 'username')
-    if (!user) {
-      ctx.throw(404)
-    }
+    const user = await userModel.findOne({ username: ctx.params.name })
     ctx.body = user
   } catch (err) {
-    if (err.name === 'CastError' || err.name === 'NotFoundError') {
-      ctx.throw(404, `username ${ctx.params.name} not found`)
-    }
     ctx.throw(500)
   }
 })
