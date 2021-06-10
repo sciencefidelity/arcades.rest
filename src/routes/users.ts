@@ -3,7 +3,7 @@ import Router from 'koa-router'
 import bcrypt from 'bcryptjs'
 import _ from 'underscore'
 import { userModel } from '../models/userSchema'
-// import { Authenticate } from '../auth/auth'
+import { Authenticate } from '../auth/auth'
 
 const router = new Router({ prefix: '/users' })
 
@@ -208,16 +208,16 @@ router.put('/', async (ctx, next) => {
 })
 
 // auth user
-// router.post('/auth', async (ctx, next) => {
-//   const { username, password } = ctx.request.body
-//   try {
-//     const user = await Authenticate(username, password)
-//     if (user) ctx.body.user
-//   } catch(err) {
-//     // user unauthorised
-//     ctx.throw(500, 'unauthorised')
-//   }
-//
-// })
+router.post('/auth', async (ctx, next) => {
+  const { username, password } = ctx.request.body
+  try {
+    const user = await Authenticate(username, password)
+    if (user) ctx.body.user
+  } catch(err) {
+    // user unauthorised
+    ctx.throw(500, 'unauthorised')
+  }
+
+})
 
 export default router

@@ -1,5 +1,5 @@
 import { compare } from 'bcryptjs'
-import UserModel from '../models/userSchema'
+import { userModel } from '../models/userSchema'
 // import * as mongoose from 'mongoose'
 // const UserModel = mongoose.model('User')
 
@@ -7,7 +7,7 @@ export const Authenticate = (username:string, password:string) => {
   return new Promise(async (resolve, reject) => {
     try {
       //get user by email
-      const user = await UserModel.findOne({ username })
+      const user = await userModel.findOne({ username })
 
       if (!user) {
         throw(422)
