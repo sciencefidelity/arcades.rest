@@ -1,10 +1,13 @@
+import * as dotenv from 'dotenv'
 import Router from 'koa-router'
+import jwt from 'jsonwebtoken'
 // import { scrypt, randomBytes } from 'crypto'
 import bcrypt from 'bcryptjs'
 import _ from 'underscore'
 import { userModel } from '../models/userSchema'
 import { Authenticate } from '../auth/auth'
 
+dotenv.config({ path: '.env' })
 const router = new Router({ prefix: '/users' })
 
 // get all users
@@ -212,8 +215,15 @@ router.post('/auth', async (ctx, next) => {
   const { username, password } = ctx.request.body
   try {
     const user = await Authenticate(username, password)
-    // if (user) ctx.body.user = user
-    console.log(user)
+
+    //create jwt
+    ctx.status = 200
+    const token = jwt.sign(user.toJSON(),
+        process.env.JWT_SECRET, {expiresIn: '15m'})
+
+    const { iat, exp } = jwt.decode(token)
+    caches.tx
+
   } catch(err) {
     // user unauthorised
     ctx.throw(401, 'unauthorised')
