@@ -8,7 +8,6 @@ export const Authenticate = (username:string, password:string) => {
     try {
       //get user by email
       const user = await userModel.findOne({ username })
-
       if (!user) {
         throw(422)
       }
@@ -16,6 +15,7 @@ export const Authenticate = (username:string, password:string) => {
       compare(password, user.password, (err, isMatch) => {
         if(err) throw err
         if(isMatch) {
+          console.log('Passwords match!')
           resolve(user)
         } else {
           // password didn't match

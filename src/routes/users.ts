@@ -212,10 +212,11 @@ router.post('/auth', async (ctx, next) => {
   const { username, password } = ctx.request.body
   try {
     const user = await Authenticate(username, password)
-    if (user) ctx.body.user
+    // if (user) ctx.body.user = user
+    console.log(user)
   } catch(err) {
     // user unauthorised
-    ctx.throw(500, 'unauthorised')
+    ctx.throw(401, 'unauthorised')
   }
 
 })
