@@ -1,30 +1,30 @@
-// import { compare } from 'bcryptjs'
-// import { model, Document } from 'mongoose'
-// const User = model<Document>('User')
-import UserModel from '../models/userSchema'
+import { compare } from 'bcryptjs'
+import { UserModel } from '../models/userSchema'
+// import * as mongoose from 'mongoose'
+// const UserModel = mongoose.model('User')
 
-const auth = (email:string, password:string) => {
+export const Authenticate = (username:string, password:string) => {
   return new Promise(async (resolve, reject) => {
     try {
       //get user by email
-      const user = await UserModel.findOne({ email })
+      const user = await UserModel.findOne({ username })
 
-      console.log(user!.password)
+      if (!user) {
+        throw(422)
+      }
       // match password
-      // compare(password, user.password, (err, result) => {
-      //   if(err) throw err
-      //   if(result) {
-      //     resolve(user)
-      //   } else {
-      //     // password didn't match
-      //     reject('authentication failed')
-      //   }
-      // })
+      compare(password, user.password, (err, isMatch) => {
+        if(err) throw err
+        if(isMatch) {
+          resolve(user)
+        } else {
+          // password didn't match
+          reject('authentication failed')
+        }
+      })
     } catch(err) {
       // email not found
       reject('authentication failed')
     }
   })
 }
-
-export default auth
