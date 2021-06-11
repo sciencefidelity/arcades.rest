@@ -13,7 +13,7 @@ const router = new Router({ prefix: '/users' })
 router.get('/', async (ctx, next) => {
   try {
     ctx.body = await userModel.find({})
-    if (!ctx.body[0]) ctx.throw(204)
+    if (!ctx.body[0]) ctx.throw(404)
   } catch (err) {
     ctx.status = err.status || 500
   }
