@@ -1,7 +1,7 @@
 import koaJwt from 'koa-jwt'
 import config from '../config'
 
-// initiate jwt
+// initiate secret
 let secret
 if (config.JWT_SECRET) {
   secret = config.JWT_SECRET
