@@ -1,7 +1,5 @@
 import { compare } from 'bcryptjs'
 import { userModel } from '../models/userSchema'
-// import * as mongoose from 'mongoose'
-// const UserModel = mongoose.model('User')
 
 export const Authenticate = (username:string, password:string) => {
   return new Promise(async (resolve, reject) => {
