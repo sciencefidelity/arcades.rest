@@ -13,7 +13,6 @@ export const Authenticate = (username:string, password:string) => {
       compare(password, user.password, (err, isMatch) => {
         if(err) throw err
         if(isMatch) {
-          console.log('Passwords match!')
           resolve(user)
         } else {
           // password didn't match
