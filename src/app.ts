@@ -35,7 +35,7 @@ app.use(koaBody({
   urlencoded: true
 }))
 
-app.use(kjwt({ secret }).unless({ path: [/^\/auth/] }))
+app.use(kjwt({ secret }).unless({ path: ['/users/auth'] }))
 
 app.use(mainRoute.routes())
    .use(mainRoute.allowedMethods())
