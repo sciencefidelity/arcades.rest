@@ -4,6 +4,7 @@ import kjwt from 'koa-jwt'
 import Mongoose from 'mongoose'
 import koaBody from 'koa-body'
 import error from 'koa-json-error'
+import { networkInterfaces } from 'os'
 
 import mainRoute from './routes/index'
 import arcadesRoute from './routes/arcades'
@@ -11,8 +12,8 @@ import usersRoute from './routes/users'
 
 dotenv.config({ path: '.env' })
 
+// conect to DB
 const connectionString = process.env.MONGO_ATLAS_STRING
-
 Mongoose.connect(connectionString!, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -20,8 +21,19 @@ Mongoose.connect(connectionString!, {
 })
 Mongoose.connection.on('error', console.error)
 
+// init koa server
 const app = new Koa()
-const port = process.env.PORT
+const port = process.env.PORT || 3000
+
+// get the local network address
+let address:string
+networkInterfaces().en0?.filter(details => {
+  if (details.family === 'IPv4') {
+    address = details.address
+  }
+})
+
+// initiate jwt
 let secret
 if (process.env.JWT_SECRET) {
   secret = process.env.JWT_SECRET
@@ -35,6 +47,8 @@ app.use(koaBody({
   urlencoded: true
 }))
 
+// secure all paths except auth
+// TODO do not use token for create user
 app.use(kjwt({ secret }).unless({ path: ['/users/auth'] }))
 
 app.use(mainRoute.routes())
@@ -47,5 +61,6 @@ app.use(mainRoute.routes())
 
 // start server
 app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}`)
+  console.log(`listening at http://localhost:${port}`)
+  console.log(`local network http://${address}:${port}`)
 })
