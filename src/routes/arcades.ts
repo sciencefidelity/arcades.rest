@@ -13,7 +13,7 @@ router.get('/', async (ctx, next) => {
   }
 })
 
-// add a user
+// add an arcade
 router.post('/', async (ctx, next) => {
   let { index } = ctx.request.body
   // check if data is application/json

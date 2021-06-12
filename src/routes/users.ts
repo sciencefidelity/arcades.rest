@@ -218,10 +218,9 @@ router.post('/auth', async (ctx, next) => {
     ctx.status = 200;
     ctx.body = {
       token: jwt.sign(
-        {
-          role: 'admin'
-        },
-        secret!
+        { role: 'admin' },
+        secret!,
+        { expiresIn: '1d' }
       ),
       message: 'Successful Authentication'
     }
