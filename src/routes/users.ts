@@ -6,7 +6,6 @@ import _ from 'underscore'
 import { userModel } from '../models/userSchema'
 import { Authenticate } from '../auth/auth'
 
-// dotenv.config({ path: '.env' })
 const router = new Router({ prefix: '/users' })
 
 // get all users
