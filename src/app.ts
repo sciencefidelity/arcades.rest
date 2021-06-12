@@ -48,8 +48,7 @@ app.use(koaBody({
 }))
 
 // secure all paths except auth
-// TODO do not use token for create user
-app.use(kjwt({ secret }).unless({ path: ['/users/auth'] }))
+app.use(kjwt({ secret }).unless({ path: ['/users/auth', '/users/register'] }))
 
 app.use(mainRoute.routes())
    .use(mainRoute.allowedMethods())

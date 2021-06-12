@@ -83,7 +83,7 @@ router.post('/find', async (ctx, next) => {
 })
 
 // add a user
-router.post('/', async (ctx, next) => {
+router.post('/register', async (ctx, next) => {
 
   let { username, email, password } = ctx.request.body
 
