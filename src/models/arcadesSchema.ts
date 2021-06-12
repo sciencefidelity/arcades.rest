@@ -1,45 +1,44 @@
 import { Schema, model } from 'mongoose'
 
 interface Arcade {
-  firstName: string
-  lastName: string
-  username: string
-  email: string
-  password: string
-  avatar?: string
+  convolute: {
+    letter: string;
+    title: string;
+  },
+  text: {
+    p1?: string;
+    p2?: string;
+    p3?: string;
+    p4?: string;
+  }
+  index: string
+  tags: string[]
 }
 
 // interface IUserDoc extends Document, IUser {}
 
 const ArcadesSchema = new Schema<Arcade>({
-  firstName: {
+  convolute: {
+    type: Object,
+    required: true,
+    strict: true
+  },
+  text: {
+    type: Object,
+    required: true,
+    strict: true
+  },
+  index: {
     type: String,
     required: true,
     strict: true
   },
-  lastName: {
-    type: String,
+  tags: {
+    type: Array,
     required: true,
     strict: true
   },
-  username: {
-    type: String,
-    required: true,
-    strict: true
-  },
-  email: {
-    type: String,
-    required: true,
-    strict: true,
-    trim: true
-  },
-  password: {
-    type: String,
-    required: true,
-    strict: true
-  },
-  avatar: String
 }, { timestamps: { createdAt: 'createdAt' }
 })
 
-export const userModel = model<Arcade>('User', ArcadesSchema)
+export const arcadesModel = model<Arcade>('User', ArcadesSchema)
