@@ -13,8 +13,6 @@ interface Arcade {
   tags?: string[]
 }
 
-// interface IUserDoc extends Document, IUser {}
-
 const ArcadesSchema = new Schema<Arcade>({
   convolute: {
     type: Object,

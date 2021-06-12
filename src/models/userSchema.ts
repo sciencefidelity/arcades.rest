@@ -9,8 +9,6 @@ interface User {
   avatar?: string
 }
 
-// interface IUserDoc extends Document, IUser {}
-
 const UserSchema = new Schema<User>({
   firstName: {
     type: String,
