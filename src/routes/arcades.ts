@@ -35,4 +35,30 @@ router.post('/', async (ctx, next) => {
   }
 })
 
+// find by tag in json
+router.post('/find', async (ctx, next) => {
+
+  const { tags } = ctx.request.body
+
+  let errorMessage = `${tags} not found`
+
+  try {
+    const arcade = await arcadesModel
+      .findOne({ tags })
+
+    if (!arcade) {
+      ctx.throw(404)
+    }
+
+    ctx.body = arcade
+
+  } catch (err) {
+    if (err.name === 'CastError' || err.name === 'NotFoundError') {
+      ctx.response.status
+      ctx.throw(404, errorMessage)
+    }
+    ctx.throw(500)
+  }
+})
+
 export default router
