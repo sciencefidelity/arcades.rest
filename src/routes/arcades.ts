@@ -23,7 +23,7 @@ router.post('/', async (ctx, next) => {
   try {
     // check if the arcade exists before creating
     let arcade = await arcadesModel.findOne({ index })
-    // if user doesn't exist - create arcade
+    // if arcade doesn't exist - create arcade
     if(!arcade) {
       arcade = await new arcadesModel(ctx.request.body).save()
       ctx.status = 201
