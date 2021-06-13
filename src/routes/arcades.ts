@@ -62,4 +62,20 @@ router.post('/find', async (ctx, next) => {
   }
 })
 
+// delete an arcade
+router.delete('/:id', koaJwt, async (ctx, next) => {
+  try {
+    const user = await arcadesModel.findByIdAndRemove(ctx.params.id)
+    if (!user) {
+      ctx.throw(404)
+    }
+    ctx.body = user
+  } catch (err) {
+    if (err.name === 'CastError' || err.name === 'NotFoundError') {
+      ctx.throw(404, `user with the id ${ctx.params.id} not found`)
+    }
+    ctx.throw(500)
+  }
+})
+
 export default router
