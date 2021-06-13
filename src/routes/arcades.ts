@@ -1,6 +1,6 @@
 import Router from 'koa-router'
 import { arcadesModel } from '../models/arcadesSchema'
-import jwt from '../middlewares/jwt'
+import koaJwt from '../middlewares/jwt'
 
 const router = new Router({ prefix: '/arcades' })
 
@@ -15,7 +15,7 @@ router.get('/', async (ctx, next) => {
 })
 
 // add an arcade
-router.post('/', jwt, async (ctx, next) => {
+router.post('/', koaJwt, async (ctx, next) => {
   let { index } = ctx.request.body
   // check if data is application/json
   if(!ctx.is('application/json')) {
