@@ -48,7 +48,7 @@ app.use(koaBody({
 }))
 
 // secure all paths except auth
-app.use(kjwt({ secret }).unless({ path: ['/users/auth', '/users/register'] }))
+app.use(kjwt({ secret }).unless({ path: ['/users/auth', '/users/register', '/arcades/find'] }))
 
 app.use(mainRoute.routes())
    .use(mainRoute.allowedMethods())
