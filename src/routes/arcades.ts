@@ -1,6 +1,6 @@
 import Router from 'koa-router'
 import { arcadesModel } from '../models/arcadesSchema'
-import koaJwt from '../middlewares/jwt'
+import jwt from '../middlewares/jwt'
 
 const router = new Router({ prefix: '/arcades' })
 
@@ -15,7 +15,7 @@ router.get('/', async (ctx, next) => {
 })
 
 // add an arcade
-router.post('/', koaJwt, async (ctx, next) => {
+router.post('/', jwt, async (ctx, next) => {
   let { index } = ctx.request.body
   // check if data is application/json
   if(!ctx.is('application/json')) {
@@ -63,7 +63,7 @@ router.post('/find', async (ctx, next) => {
 })
 
 // delete an arcade
-router.delete('/:id', koaJwt, async (ctx, next) => {
+router.delete('/:id', jwt, async (ctx, next) => {
   try {
     const user = await arcadesModel.findByIdAndRemove(ctx.params.id)
     if (!user) {

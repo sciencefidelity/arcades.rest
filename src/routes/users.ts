@@ -1,16 +1,17 @@
 import Router from 'koa-router'
-import jwt from 'jsonwebtoken'
+import jsonwebtoken from 'jsonwebtoken'
+// import koaJwt from 'koa-jwt'
 // import { scrypt, randomBytes } from 'crypto'
 import bcrypt from 'bcryptjs'
 import _ from 'underscore'
 import { userModel } from '../models/userSchema'
 import { Authenticate } from '../middlewares/authenticate'
-import koaJwt from '../middlewares/jwt'
+import jwt from '../middlewares/jwt'
 
 const router = new Router({ prefix: '/users' })
 
 // get all users
-router.get('/', koaJwt, async (ctx, next) => {
+router.get('/', jwt, async (ctx, next) => {
   try {
     ctx.body = await userModel.find({})
     if (!ctx.body[0]) ctx.throw(404)
@@ -20,7 +21,7 @@ router.get('/', koaJwt, async (ctx, next) => {
 })
 
 // find a user by id
-router.get('/:id', koaJwt, async (ctx, next) => {
+router.get('/:id', jwt, async (ctx, next) => {
   try {
     const user = await userModel.findById(ctx.params.id)
     if (!user) {
@@ -36,7 +37,7 @@ router.get('/:id', koaJwt, async (ctx, next) => {
 })
 
 // find by username in url
-router.get('/username/:name', koaJwt, async (ctx, next) => {
+router.get('/username/:name', jwt, async (ctx, next) => {
   try {
     const user = await userModel.findOne({ username: ctx.params.name })
     if (!user) {
@@ -52,7 +53,7 @@ router.get('/username/:name', koaJwt, async (ctx, next) => {
 })
 
 // find by username or email in json
-router.post('/find', koaJwt, async (ctx, next) => {
+router.post('/find', jwt, async (ctx, next) => {
 
   const { username, email } = ctx.request.body
 
@@ -141,7 +142,7 @@ router.post('/register', async (ctx, next) => {
 })
 
 // update a user
-router.put('/:id', koaJwt, async (ctx, next) => {
+router.put('/:id', jwt, async (ctx, next) => {
   try {
     const user = await userModel.findByIdAndUpdate(
       ctx.params.id,
@@ -160,7 +161,7 @@ router.put('/:id', koaJwt, async (ctx, next) => {
 })
 
 // delete a user
-router.delete('/:id', koaJwt, async (ctx, next) => {
+router.delete('/:id', jwt, async (ctx, next) => {
   try {
     const user = await userModel.findByIdAndRemove(ctx.params.id)
     if (!user) {
@@ -176,7 +177,7 @@ router.delete('/:id', koaJwt, async (ctx, next) => {
 })
 
 // delete a user by username or email
-router.put('/', koaJwt, async (ctx, next) => {
+router.put('/', jwt, async (ctx, next) => {
 
   const { username, email } = ctx.request.body
 
@@ -210,7 +211,7 @@ router.put('/', koaJwt, async (ctx, next) => {
 })
 
 // auth user
-router.post('/auth', async (ctx, next) => {
+router.post('/login', async (ctx, next) => {
   const { username, password } = ctx.request.body
   const secret = process.env.JWT_SECRET
   try {
@@ -218,7 +219,7 @@ router.post('/auth', async (ctx, next) => {
     //create jwt
     ctx.status = 200;
     ctx.body = {
-      token: jwt.sign(
+      token: jsonwebtoken.sign(
         { role: 'admin' },
         secret!,
         { expiresIn: '1d' }
