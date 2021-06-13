@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import _ from 'underscore'
 import { userModel } from '../models/userSchema'
-import { Authenticate } from '../auth/auth'
+import { Authenticate } from '../middlewares/authenticate'
 
 const router = new Router({ prefix: '/users' })
 

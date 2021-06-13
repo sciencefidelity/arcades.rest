@@ -1,6 +1,5 @@
 import * as dotenv from 'dotenv'
 import Koa from 'koa'
-import kjwt from 'koa-jwt'
 import Mongoose from 'mongoose'
 import koaBody from 'koa-body'
 import error from 'koa-json-error'
@@ -33,22 +32,11 @@ networkInterfaces().en0?.filter(details => {
   }
 })
 
-// initiate jwt
-let secret
-if (process.env.JWT_SECRET) {
-  secret = process.env.JWT_SECRET
-} else {
-  throw new Error('secret environment variable is not set')
-}
-
 app.use(koaBody({
   formidable:{uploadDir: './uploads'},
   multipart: true,
   urlencoded: true
 }))
-
-// secure all paths except auth
-app.use(kjwt({ secret }).unless({ path: ['/users/auth', '/users/register', '/arcades/find'] }))
 
 app.use(mainRoute.routes())
    .use(mainRoute.allowedMethods())
