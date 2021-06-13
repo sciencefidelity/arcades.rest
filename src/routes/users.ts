@@ -87,22 +87,22 @@ router.post('/register', async (ctx, next) => {
 
   let { username, email, password } = ctx.request.body
 
-// check if data is application/json
+  // check if data is application/json
   if(!ctx.is('application/json')) {
     ctx.throw(412, 'content-Type must be application/json')
   }
 
   try {
-// check if user exists before creating
+    // check if user exists before creating
     let user = await userModel.findOne({ $or: [
       { username },
       { email }
     ]})
 
-// if user doesn't exist - create user
+    // if user doesn't exist - create user
     if(!user) {
 
-// hash password (scrypt)
+      // hash password (scrypt)
       // async function hash(password:string) {
       //   return new Promise((resolve, reject) => {
       //     const salt = randomBytes(16).toString('hex')
@@ -113,7 +113,7 @@ router.post('/register', async (ctx, next) => {
       //   })
       // }
 
-// hash password (bcrypt)
+      // hash password (bcrypt)
       async function hash(password:string) {
         return new Promise((resolve, reject) => {
           bcrypt.genSalt(10, (err, salt) => {
@@ -133,7 +133,7 @@ router.post('/register', async (ctx, next) => {
 
     ctx.body = user
 
-// error handling
+  // error handling
   } catch (err) {
     ctx.throw(422, 'missing content')
   }
@@ -184,7 +184,7 @@ router.put('/', async (ctx, next) => {
     errorMessage = `email address ${email} not found`
   }
 
-// check if data is application/json
+  // check if data is application/json
   if(!ctx.is('application/json')) {
     ctx.throw(412, 'content-Type must be application/json')
   }
@@ -225,7 +225,7 @@ router.post('/auth', async (ctx, next) => {
       message: 'Successful Authentication'
     }
   } catch(err) {
-// user unauthorised
+  // user unauthorised
     ctx.throw(401, 'unauthorised')
   }
 
