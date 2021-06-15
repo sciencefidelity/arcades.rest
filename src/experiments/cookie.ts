@@ -5,11 +5,11 @@ const app = new Koa()
 const port = process.env.PORT || 3000
 const router = new Router()
 
-const setCookie = (ctx: any) => {
+const setCookie = (ctx: Koa.ParameterizedContext) => {
   // expires after 360000 ms
   ctx.cookies.set('name', 'matt', {
     httpOnly: false,
-    expires: 360000 + Date.now()
+    expires: new Date(360000 + Date.now())
   })
   console.log('Cookies: name =', ctx.cookies.get('name'))
 }

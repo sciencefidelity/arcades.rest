@@ -26,13 +26,12 @@ app.use(Body({
   urlencoded: true
 }))
 
-async function renderForm(ctx: any) {
+const renderForm = async (ctx: Koa.ParameterizedContext) => {
   await ctx.render('form')
 }
 
-const handleForm = (ctx: any) => {
+const handleForm = (ctx: Koa.ParameterizedContext) => {
   console.log(ctx.request.body)
-  console.log(ctx.req.body)
   ctx.body = ctx.request.body
 }
 

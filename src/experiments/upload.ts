@@ -25,11 +25,11 @@ app.use(koaBody({
   urlencoded: true
 }))
 
-async function renderForm(ctx: any) {
+async function renderForm(ctx: Koa.ParameterizedContext) {
   await ctx.render('file_upload')
 }
 
-const handleForm = (ctx: any) => {
+const handleForm = (ctx: Koa.ParameterizedContext) => {
   console.log('Files: ', ctx.request.files)
   console.log('Fields: ', ctx.request.body.fields)
   ctx.body = 'Recieved your data!'

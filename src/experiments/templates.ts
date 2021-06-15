@@ -36,9 +36,9 @@ router.get('/not_found', async (ctx) => {
   ctx.status = 404
   await ctx.render('404')
 })
-const handle404Errors = (ctx: any) => {
-   if (404 != ctx.status) return;
-   ctx.redirect('/not_found');
+const handle404Errors = (ctx: Koa.ParameterizedContext) => {
+   if (404 != ctx.status) return
+   ctx.redirect('/not_found')
 }
 
 // start server

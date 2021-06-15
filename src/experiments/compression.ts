@@ -32,12 +32,13 @@ app.use(Compress({
   br: false // disable brotli
 }))
 
-async function getRoot(ctx: any, next: any) {
+const getRoot = async (ctx: Koa.ParameterizedContext, next: Koa.Next) => {
   await ctx.render('index', {
     styles: styles
   })
   console.log(ctx.request)
   console.log(ctx.response)
+  await next()
 }
 
 router.get('/', getRoot)

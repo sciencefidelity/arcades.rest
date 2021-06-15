@@ -1,8 +1,10 @@
 import glob from 'glob'
 
+type Routes = any[]
+
 export default function(dirname:any) {
   return new Promise((resolve, reject) => {
-    const routes:any[] = []
+    const routes: Routes = []
     glob(
       `${dirname}/*`,
       {
