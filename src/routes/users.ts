@@ -11,7 +11,7 @@ import jwt from '../middlewares/jwt'
 const router = new Router({ prefix: '/users' })
 
 // get all users
-router.get('/', jwt, async (ctx, next) => {
+router.get('/', jwt, async (ctx, _next) => {
   try {
     ctx.body = await userModel.find({})
     if (!ctx.body[0]) ctx.throw(404)
@@ -21,7 +21,7 @@ router.get('/', jwt, async (ctx, next) => {
 })
 
 // find a user by id
-router.get('/:id', jwt, async (ctx, next) => {
+router.get('/:id', jwt, async (ctx, _next) => {
   try {
     const user = await userModel.findById(ctx.params.id)
     if (!user) {
@@ -37,7 +37,7 @@ router.get('/:id', jwt, async (ctx, next) => {
 })
 
 // find by username in url
-router.get('/username/:name', jwt, async (ctx, next) => {
+router.get('/username/:name', jwt, async (ctx, _next) => {
   try {
     const user = await userModel.findOne({ username: ctx.params.name })
     if (!user) {
@@ -53,7 +53,7 @@ router.get('/username/:name', jwt, async (ctx, next) => {
 })
 
 // find by username or email in json
-router.post('/find', jwt, async (ctx, next) => {
+router.post('/find', jwt, async (ctx, _next) => {
 
   const { username, email } = ctx.request.body
 
@@ -85,7 +85,7 @@ router.post('/find', jwt, async (ctx, next) => {
 })
 
 // add a user
-router.post('/register', async (ctx, next) => {
+router.post('/register', async (ctx, _next) => {
 
   let { username, email, password } = ctx.request.body
 
@@ -118,7 +118,7 @@ router.post('/register', async (ctx, next) => {
       // hash password (bcrypt)
       async function hash(password:string) {
         return new Promise((resolve, reject) => {
-          bcrypt.genSalt(10, (err, salt) => {
+          bcrypt.genSalt(10, (_err, salt) => {
             bcrypt.hash(password, salt, (err, hash) => {
               if (err) reject(err)
               resolve(hash)
@@ -142,7 +142,7 @@ router.post('/register', async (ctx, next) => {
 })
 
 // update a user
-router.put('/:id', jwt, async (ctx, next) => {
+router.put('/:id', jwt, async (ctx, _next) => {
   try {
     const user = await userModel.findByIdAndUpdate(
       ctx.params.id,
@@ -161,7 +161,7 @@ router.put('/:id', jwt, async (ctx, next) => {
 })
 
 // delete a user
-router.delete('/:id', jwt, async (ctx, next) => {
+router.delete('/:id', jwt, async (ctx, _next) => {
   try {
     const user = await userModel.findByIdAndRemove(ctx.params.id)
     if (!user) {
@@ -177,7 +177,7 @@ router.delete('/:id', jwt, async (ctx, next) => {
 })
 
 // delete a user by username or email
-router.put('/', jwt, async (ctx, next) => {
+router.put('/', jwt, async (ctx, _next) => {
 
   const { username, email } = ctx.request.body
 
@@ -211,7 +211,7 @@ router.put('/', jwt, async (ctx, next) => {
 })
 
 // auth user
-router.post('/login', async (ctx, next) => {
+router.post('/login', async (ctx, _next) => {
   const { username, password } = ctx.request.body
   const secret = process.env.JWT_SECRET
   try {
@@ -224,7 +224,8 @@ router.post('/login', async (ctx, next) => {
         secret!,
         { expiresIn: '1d' }
       ),
-      message: 'Successful Authentication'
+      message: 'Successful Authentication',
+      user: user
     }
   } catch(err) {
   // user unauthorised

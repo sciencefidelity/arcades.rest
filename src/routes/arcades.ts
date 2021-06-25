@@ -5,7 +5,7 @@ import jwt from '../middlewares/jwt'
 const router = new Router({ prefix: '/arcades' })
 
 // get all arcades
-router.get('/', async (ctx, next) => {
+router.get('/', async (ctx, _next) => {
   try {
     ctx.body = await arcadesModel.find({})
     if (!ctx.body[0]) ctx.throw(404)
@@ -15,7 +15,7 @@ router.get('/', async (ctx, next) => {
 })
 
 // add an arcade
-router.post('/', jwt, async (ctx, next) => {
+router.post('/', jwt, async (ctx, _next) => {
   let { index } = ctx.request.body
   // check if data is application/json
   if(!ctx.is('application/json')) {
@@ -37,7 +37,7 @@ router.post('/', jwt, async (ctx, next) => {
 })
 
 // find by tag in json
-router.post('/find', async (ctx, next) => {
+router.post('/find', async (ctx, _next) => {
 
   const { tags } = ctx.request.body
 
@@ -63,7 +63,7 @@ router.post('/find', async (ctx, next) => {
 })
 
 // delete an arcade
-router.delete('/:id', jwt, async (ctx, next) => {
+router.delete('/:id', jwt, async (ctx, _next) => {
   try {
     const user = await arcadesModel.findByIdAndRemove(ctx.params.id)
     if (!user) {
