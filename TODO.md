@@ -1,5 +1,6 @@
 ## TODO / ideas
 
+- Set up unit testing.
 - Build GUI to add data to the database.
 - Set up login to the add data GUI.
 - Make a web page to search the data.
