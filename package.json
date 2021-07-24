@@ -2,7 +2,7 @@
   "name": "arcades",
   "private": true,
   "description": "The Arcades Project API",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "author": "Matt Cook <sciencefidelity@hotmail.com>",
   "main": "dist/app.js",
   "license": "UNLICENSED",
