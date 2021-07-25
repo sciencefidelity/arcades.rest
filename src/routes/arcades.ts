@@ -1,11 +1,11 @@
-import Router from 'koa-router'
-import { arcadesModel } from '../models/arcadesSchema'
-import jwt from '../middlewares/jwt'
+import Router from "koa-router"
+import { arcadesModel } from "../models/arcadesSchema"
+import jwt from "../middlewares/jwt"
 
-const router = new Router({ prefix: '/arcades' })
+const router = new Router({ prefix: "/arcades" })
 
 // get all arcades
-router.get('/', async (ctx, _next) => {
+router.get("/", async (ctx, _next) => {
   try {
     ctx.body = await arcadesModel.find({})
     if (!ctx.body[0]) ctx.throw(404)
@@ -15,46 +15,43 @@ router.get('/', async (ctx, _next) => {
 })
 
 // add an arcade
-router.post('/', jwt, async (ctx, _next) => {
+router.post("/", jwt, async (ctx, _next) => {
   let { index } = ctx.request.body
   // check if data is application/json
-  if(!ctx.is('application/json')) {
-    ctx.throw(412, 'content-Type must be application/json')
+  if (!ctx.is("application/json")) {
+    ctx.throw(412, "content-Type must be application/json")
   }
   try {
     // check if the arcade exists before creating
     let arcade = await arcadesModel.findOne({ index })
     // if arcade doesn't exist - create arcade
-    if(!arcade) {
+    if (!arcade) {
       arcade = await new arcadesModel(ctx.request.body).save()
       ctx.status = 201
     }
     ctx.body = arcade
-  // error handling
+    // error handling
   } catch (err) {
-    ctx.throw(422, 'missing content')
+    ctx.throw(422, "missing content")
   }
 })
 
 // find by tag in json
-router.post('/find', async (ctx, _next) => {
-
+router.post("/find", async (ctx, _next) => {
   const { tags } = ctx.request.body
 
   let errorMessage = `${tags} not found`
 
   try {
-    const arcade = await arcadesModel
-      .findOne({ tags })
+    const arcade = await arcadesModel.findOne({ tags })
 
     if (!arcade) {
       ctx.throw(404)
     }
 
     ctx.body = arcade
-
   } catch (err) {
-    if (err.name === 'CastError' || err.name === 'NotFoundError') {
+    if (err.name === "CastError" || err.name === "NotFoundError") {
       ctx.response.status
       ctx.throw(404, errorMessage)
     }
@@ -63,7 +60,7 @@ router.post('/find', async (ctx, _next) => {
 })
 
 // delete an arcade
-router.delete('/:id', jwt, async (ctx, _next) => {
+router.delete("/:id", jwt, async (ctx, _next) => {
   try {
     const user = await arcadesModel.findByIdAndRemove(ctx.params.id)
     if (!user) {
@@ -71,7 +68,7 @@ router.delete('/:id', jwt, async (ctx, _next) => {
     }
     ctx.body = user
   } catch (err) {
-    if (err.name === 'CastError' || err.name === 'NotFoundError') {
+    if (err.name === "CastError" || err.name === "NotFoundError") {
       ctx.throw(404, `user with the id ${ctx.params.id} not found`)
     }
     ctx.throw(500)

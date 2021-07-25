@@ -1,24 +1,24 @@
-import * as dotenv from 'dotenv'
-import Koa from 'koa'
-import serve from 'koa-static'
-import { networkInterfaces } from 'os'
+import * as dotenv from "dotenv"
+import Koa from "koa"
+import serve from "koa-static"
+import { networkInterfaces } from "os"
 
-dotenv.config({ path: '.env' })
+dotenv.config({ path: ".env" })
 
 // init koa server
 const server = new Koa()
 const port = process.env.PORT || 3000
 
 // get the local network address
-let address:string
-networkInterfaces().en0?.filter(details => {
-  if (details.family === 'IPv4') {
+let address: string
+networkInterfaces().en0?.filter((details) => {
+  if (details.family === "IPv4") {
     address = details.address
   }
 })
 
 // serve static pages
-server.use(serve('src/public'))
+server.use(serve("src/public"))
 
 // start server
 server.listen(port, () => {

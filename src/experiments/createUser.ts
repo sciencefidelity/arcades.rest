@@ -1,27 +1,27 @@
-import * as dotenv from 'dotenv'
-import { connect } from 'mongoose'
-import { userModel } from '../models/userSchema'
+import * as dotenv from "dotenv"
+import { connect } from "mongoose"
+import { userModel } from "../models/userSchema"
 
-dotenv.config({ path: '.env' })
+dotenv.config({ path: ".env" })
 
 const connectionString = process.env.MONGO_ATLAS_STRING
 
-async function createUser(username:string) {
+async function createUser(username: string) {
   return new userModel({
     username,
-    created: Date.now()
+    created: Date.now(),
   }).save()
 }
 
-async function findUser(username:string) {
+async function findUser(username: string) {
   return await userModel.findOne({ username })
 }
 
-run().catch(err => console.log(err))
+run().catch((err) => console.log(err))
 
 async function run(): Promise<void> {
   const connector = connect(connectionString!)
-  const username = process.argv[2].split('=')[1]
+  const username = process.argv[2].split("=")[1]
 
   let user = await connector.then(async () => {
     return findUser(username)

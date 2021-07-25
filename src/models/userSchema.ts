@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose'
+import { Schema, model } from "mongoose"
 
 interface User {
   firstName: string
@@ -9,35 +9,37 @@ interface User {
   avatar?: string
 }
 
-const UserSchema = new Schema<User>({
-  firstName: {
-    type: String,
-    required: true,
-    strict: true
+const UserSchema = new Schema<User>(
+  {
+    firstName: {
+      type: String,
+      required: true,
+      strict: true,
+    },
+    lastName: {
+      type: String,
+      required: true,
+      strict: true,
+    },
+    username: {
+      type: String,
+      required: true,
+      strict: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      strict: true,
+      trim: true,
+    },
+    password: {
+      type: String,
+      required: true,
+      strict: true,
+    },
+    avatar: String,
   },
-  lastName: {
-    type: String,
-    required: true,
-    strict: true
-  },
-  username: {
-    type: String,
-    required: true,
-    strict: true
-  },
-  email: {
-    type: String,
-    required: true,
-    strict: true,
-    trim: true
-  },
-  password: {
-    type: String,
-    required: true,
-    strict: true
-  },
-  avatar: String
-}, { timestamps: { createdAt: 'createdAt' }
-})
+  { timestamps: { createdAt: "createdAt" } }
+)
 
-export const userModel = model<User>('User', UserSchema)
+export const userModel = model<User>("User", UserSchema)

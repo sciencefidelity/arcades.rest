@@ -1,17 +1,17 @@
-import Router from 'koa-router'
-import jsonwebtoken from 'jsonwebtoken'
+import Router from "koa-router"
+import jsonwebtoken from "jsonwebtoken"
 // import koaJwt from 'koa-jwt'
 // import { scrypt, randomBytes } from 'crypto'
-import bcrypt from 'bcryptjs'
-import _ from 'underscore'
-import { userModel } from '../models/userSchema'
-import { Authenticate } from '../middlewares/authenticate'
-import jwt from '../middlewares/jwt'
+import bcrypt from "bcryptjs"
+import _ from "underscore"
+import { userModel } from "../models/userSchema"
+import { Authenticate } from "../middlewares/authenticate"
+import jwt from "../middlewares/jwt"
 
-const router = new Router({ prefix: '/users' })
+const router = new Router({ prefix: "/users" })
 
 // get all users
-router.get('/', jwt, async (ctx, _next) => {
+router.get("/", jwt, async (ctx, _next) => {
   try {
     ctx.body = await userModel.find({})
     if (!ctx.body[0]) ctx.throw(404)
@@ -21,7 +21,7 @@ router.get('/', jwt, async (ctx, _next) => {
 })
 
 // find a user by id
-router.get('/:id', jwt, async (ctx, _next) => {
+router.get("/:id", jwt, async (ctx, _next) => {
   try {
     const user = await userModel.findById(ctx.params.id)
     if (!user) {
@@ -29,7 +29,7 @@ router.get('/:id', jwt, async (ctx, _next) => {
     }
     ctx.body = user
   } catch (err) {
-    if (err.name === 'CastError' || err.name === 'NotFoundError') {
+    if (err.name === "CastError" || err.name === "NotFoundError") {
       ctx.throw(404, `user with the id ${ctx.params.id} not found`)
     }
     ctx.throw(500)
@@ -37,7 +37,7 @@ router.get('/:id', jwt, async (ctx, _next) => {
 })
 
 // find by username in url
-router.get('/username/:name', jwt, async (ctx, _next) => {
+router.get("/username/:name", jwt, async (ctx, _next) => {
   try {
     const user = await userModel.findOne({ username: ctx.params.name })
     if (!user) {
@@ -45,7 +45,7 @@ router.get('/username/:name', jwt, async (ctx, _next) => {
     }
     ctx.body = user
   } catch (err) {
-    if (err.name === 'CastError' || err.name === 'NotFoundError') {
+    if (err.name === "CastError" || err.name === "NotFoundError") {
       ctx.throw(404, `username ${ctx.params.name} not found`)
     }
     ctx.throw(500)
@@ -53,8 +53,7 @@ router.get('/username/:name', jwt, async (ctx, _next) => {
 })
 
 // find by username or email in json
-router.post('/find', jwt, async (ctx, _next) => {
-
+router.post("/find", jwt, async (ctx, _next) => {
   const { username, email } = ctx.request.body
 
   let errorMessage = `user ${username} not found`
@@ -63,20 +62,15 @@ router.post('/find', jwt, async (ctx, _next) => {
   }
 
   try {
-    const user = await userModel
-      .findOne({ $or: [
-        { username },
-        { email }
-      ]})
+    const user = await userModel.findOne({ $or: [{ username }, { email }] })
 
     if (!user) {
       ctx.throw(404)
     }
 
     ctx.body = user
-
   } catch (err) {
-    if (err.name === 'CastError' || err.name === 'NotFoundError') {
+    if (err.name === "CastError" || err.name === "NotFoundError") {
       ctx.response.status
       ctx.throw(404, errorMessage)
     }
@@ -85,25 +79,20 @@ router.post('/find', jwt, async (ctx, _next) => {
 })
 
 // add a user
-router.post('/register', async (ctx, _next) => {
-
+router.post("/register", async (ctx, _next) => {
   let { username, email, password } = ctx.request.body
 
   // check if data is application/json
-  if(!ctx.is('application/json')) {
-    ctx.throw(412, 'content-Type must be application/json')
+  if (!ctx.is("application/json")) {
+    ctx.throw(412, "content-Type must be application/json")
   }
 
   try {
     // check if user exists before creating
-    let user = await userModel.findOne({ $or: [
-      { username },
-      { email }
-    ]})
+    let user = await userModel.findOne({ $or: [{ username }, { email }] })
 
     // if user doesn't exist - create user
-    if(!user) {
-
+    if (!user) {
       // hash password (scrypt)
       // async function hash(password:string) {
       //   return new Promise((resolve, reject) => {
@@ -116,7 +105,7 @@ router.post('/register', async (ctx, _next) => {
       // }
 
       // hash password (bcrypt)
-      async function hash(password:string) {
+      async function hash(password: string) {
         return new Promise((resolve, reject) => {
           bcrypt.genSalt(10, (_err, salt) => {
             bcrypt.hash(password, salt, (err, hash) => {
@@ -129,20 +118,21 @@ router.post('/register', async (ctx, _next) => {
 
       password = await hash(password)
       user = await new userModel(
-        _.extend(ctx.request.body, { password })).save()
+        _.extend(ctx.request.body, { password })
+      ).save()
       ctx.status = 201
     }
 
     ctx.body = user
 
-  // error handling
+    // error handling
   } catch (err) {
-    ctx.throw(422, 'missing content')
+    ctx.throw(422, "missing content")
   }
 })
 
 // update a user
-router.put('/:id', jwt, async (ctx, _next) => {
+router.put("/:id", jwt, async (ctx, _next) => {
   try {
     const user = await userModel.findByIdAndUpdate(
       ctx.params.id,
@@ -153,7 +143,7 @@ router.put('/:id', jwt, async (ctx, _next) => {
     }
     ctx.body = await userModel.findById(ctx.params.id)
   } catch (err) {
-    if (err.name === 'CastError' || err.name === 'NotFoundError') {
+    if (err.name === "CastError" || err.name === "NotFoundError") {
       ctx.throw(404, `user with the id ${ctx.params.id} not found`)
     }
     ctx.throw(500)
@@ -161,7 +151,7 @@ router.put('/:id', jwt, async (ctx, _next) => {
 })
 
 // delete a user
-router.delete('/:id', jwt, async (ctx, _next) => {
+router.delete("/:id", jwt, async (ctx, _next) => {
   try {
     const user = await userModel.findByIdAndRemove(ctx.params.id)
     if (!user) {
@@ -169,7 +159,7 @@ router.delete('/:id', jwt, async (ctx, _next) => {
     }
     ctx.body = user
   } catch (err) {
-    if (err.name === 'CastError' || err.name === 'NotFoundError') {
+    if (err.name === "CastError" || err.name === "NotFoundError") {
       ctx.throw(404, `user with the id ${ctx.params.id} not found`)
     }
     ctx.throw(500)
@@ -177,8 +167,7 @@ router.delete('/:id', jwt, async (ctx, _next) => {
 })
 
 // delete a user by username or email
-router.put('/', jwt, async (ctx, _next) => {
-
+router.put("/", jwt, async (ctx, _next) => {
   const { username, email } = ctx.request.body
 
   let errorMessage = `user ${username} not found`
@@ -187,15 +176,14 @@ router.put('/', jwt, async (ctx, _next) => {
   }
 
   // check if data is application/json
-  if(!ctx.is('application/json')) {
-    ctx.throw(412, 'content-Type must be application/json')
+  if (!ctx.is("application/json")) {
+    ctx.throw(412, "content-Type must be application/json")
   }
 
   try {
-    const user = await userModel.findOneAndRemove({ $or: [
-      { username },
-      { email }
-    ]})
+    const user = await userModel.findOneAndRemove({
+      $or: [{ username }, { email }],
+    })
 
     if (!user) {
       ctx.throw(404)
@@ -203,7 +191,7 @@ router.put('/', jwt, async (ctx, _next) => {
 
     ctx.body = user
   } catch (err) {
-    if (err.name === 'CastError' || err.name === 'NotFoundError') {
+    if (err.name === "CastError" || err.name === "NotFoundError") {
       ctx.throw(404, errorMessage)
     }
     ctx.throw(500)
@@ -211,27 +199,22 @@ router.put('/', jwt, async (ctx, _next) => {
 })
 
 // auth user
-router.post('/login', async (ctx, _next) => {
+router.post("/login", async (ctx, _next) => {
   const { username, password } = ctx.request.body
   const secret = process.env.JWT_SECRET
   try {
     const user = await Authenticate(username, password)
     //create jwt
-    ctx.status = 200;
+    ctx.status = 200
     ctx.body = {
-      token: jsonwebtoken.sign(
-        { role: 'admin' },
-        secret!,
-        { expiresIn: '1d' }
-      ),
-      message: 'Successful Authentication',
-      user: user
+      token: jsonwebtoken.sign({ role: "admin" }, secret!, { expiresIn: "1d" }),
+      message: "Successful Authentication",
+      user: user,
     }
-  } catch(err) {
-  // user unauthorised
-    ctx.throw(401, 'unauthorised')
+  } catch (err) {
+    // user unauthorised
+    ctx.throw(401, "unauthorised")
   }
-
 })
 
 export default router

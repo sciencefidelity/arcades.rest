@@ -1,12 +1,12 @@
-import * as dotenv from 'dotenv'
-import Koa from 'koa'
-import Router from 'koa-router'
-import Body from 'koa-body'
-import Path from 'path'
-import Pug from 'koa-pug'
+import * as dotenv from "dotenv"
+import Koa from "koa"
+import Router from "koa-router"
+import Body from "koa-body"
+import Path from "path"
+import Pug from "koa-pug"
 
 // load environment variables
-dotenv.config({ path: '.env' })
+dotenv.config({ path: ".env" })
 
 // set up middleware
 const app = new Koa()
@@ -14,20 +14,22 @@ const port = process.env.PORT || 3000
 const router = new Router()
 
 const pug = new Pug({
-  viewPath: Path.resolve(__dirname, './views'),
-  basedir: Path.resolve(__dirname, './views'),
-  app: app
+  viewPath: Path.resolve(__dirname, "./views"),
+  basedir: Path.resolve(__dirname, "./views"),
+  app: app,
 })
 
 // set up body parsing middleware
-app.use(Body({
-  formidable:{uploadDir: './uploads'},
-  multipart: true,
-  urlencoded: true
-}))
+app.use(
+  Body({
+    formidable: { uploadDir: "./uploads" },
+    multipart: true,
+    urlencoded: true,
+  })
+)
 
 const renderForm = async (ctx: Koa.ParameterizedContext) => {
-  await ctx.render('form')
+  await ctx.render("form")
 }
 
 const handleForm = (ctx: Koa.ParameterizedContext) => {
@@ -35,12 +37,11 @@ const handleForm = (ctx: Koa.ParameterizedContext) => {
   ctx.body = ctx.request.body
 }
 
-router.get('/', renderForm)
-router.post('/', handleForm)
+router.get("/", renderForm)
+router.post("/", handleForm)
 
 // start server
-app.use(router.routes())
-   .use(router.allowedMethods())
+app.use(router.routes()).use(router.allowedMethods())
 app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`)
 })
