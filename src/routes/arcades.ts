@@ -1,4 +1,5 @@
 import Router from "koa-router"
+
 import { ArcadesModel } from "../models/arcadesSchema"
 import jwt from "../middlewares/jwt"
 

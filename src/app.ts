@@ -1,12 +1,12 @@
 import * as dotenv from "dotenv"
 import Koa from "koa"
-import Mongoose from "mongoose"
 import koaBody from "koa-body"
 import error from "koa-json-error"
+import Mongoose from "mongoose"
 import { networkInterfaces } from "os"
 
-import mainRoute from "./routes/index"
 import arcadesRoute from "./routes/arcades"
+import mainRoute from "./routes/index"
 import usersRoute from "./routes/users"
 
 dotenv.config({ path: ".env" })

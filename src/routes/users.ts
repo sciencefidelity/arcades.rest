@@ -1,12 +1,13 @@
-import Router from "koa-router"
-import jsonwebtoken from "jsonwebtoken"
-// import koaJwt from 'koa-jwt'
-// import { scrypt, randomBytes } from 'crypto'
 import bcrypt from "bcryptjs"
+// import { scrypt, randomBytes } from "crypto"
+import jsonwebtoken from "jsonwebtoken"
+// import koaJwt from "koa-jwt"
+import Router from "koa-router"
 import _ from "underscore"
-import { UserModel } from "../models/userSchema"
+
 import { Authenticate } from "../middlewares/authenticate"
 import jwt from "../middlewares/jwt"
+import { UserModel } from "../models/userSchema"
 
 const router = new Router({ prefix: "/users" })
 
