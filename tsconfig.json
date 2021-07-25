@@ -15,6 +15,7 @@
     "types": [
       "bcryptjs",
       "glob",
+      "jest",
       "jsonwebtoken",
       "koa",
       "koa-basic-auth",

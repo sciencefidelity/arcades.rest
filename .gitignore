@@ -3,7 +3,7 @@ node_modules
 *.log
 
 # mac
-DS_Store
+.DS_Store
 *.bak
 *.css
 *.css.map
