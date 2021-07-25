@@ -11,7 +11,8 @@ const port = process.env.PORT || 3000
 
 // get the local network address
 let address: string
-networkInterfaces().en0?.filter((details) => {
+// eslint-disable-next-line array-callback-return
+networkInterfaces().en0?.filter(details => {
   if (details.family === "IPv4") {
     address = details.address
   }

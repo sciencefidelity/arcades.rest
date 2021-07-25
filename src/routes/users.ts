@@ -4,16 +4,17 @@ import jsonwebtoken from "jsonwebtoken"
 // import { scrypt, randomBytes } from 'crypto'
 import bcrypt from "bcryptjs"
 import _ from "underscore"
-import { userModel } from "../models/userSchema"
+import { UserModel } from "../models/userSchema"
 import { Authenticate } from "../middlewares/authenticate"
 import jwt from "../middlewares/jwt"
 
 const router = new Router({ prefix: "/users" })
 
 // get all users
+// eslint-disable-next-line space-before-function-paren
 router.get("/", jwt, async (ctx, _next) => {
   try {
-    ctx.body = await userModel.find({})
+    ctx.body = await UserModel.find({})
     if (!ctx.body[0]) ctx.throw(404)
   } catch (err) {
     ctx.status = err.status || 500
@@ -21,9 +22,10 @@ router.get("/", jwt, async (ctx, _next) => {
 })
 
 // find a user by id
+// eslint-disable-next-line space-before-function-paren
 router.get("/:id", jwt, async (ctx, _next) => {
   try {
-    const user = await userModel.findById(ctx.params.id)
+    const user = await UserModel.findById(ctx.params.id)
     if (!user) {
       ctx.throw(404)
     }
@@ -37,9 +39,10 @@ router.get("/:id", jwt, async (ctx, _next) => {
 })
 
 // find by username in url
+// eslint-disable-next-line space-before-function-paren
 router.get("/username/:name", jwt, async (ctx, _next) => {
   try {
-    const user = await userModel.findOne({ username: ctx.params.name })
+    const user = await UserModel.findOne({ username: ctx.params.name })
     if (!user) {
       ctx.throw(404)
     }
@@ -53,6 +56,7 @@ router.get("/username/:name", jwt, async (ctx, _next) => {
 })
 
 // find by username or email in json
+// eslint-disable-next-line space-before-function-paren
 router.post("/find", jwt, async (ctx, _next) => {
   const { username, email } = ctx.request.body
 
@@ -62,7 +66,7 @@ router.post("/find", jwt, async (ctx, _next) => {
   }
 
   try {
-    const user = await userModel.findOne({ $or: [{ username }, { email }] })
+    const user = await UserModel.findOne({ $or: [{ username }, { email }] })
 
     if (!user) {
       ctx.throw(404)
@@ -71,14 +75,36 @@ router.post("/find", jwt, async (ctx, _next) => {
     ctx.body = user
   } catch (err) {
     if (err.name === "CastError" || err.name === "NotFoundError") {
-      ctx.response.status
+      // ctx.response.status
       ctx.throw(404, errorMessage)
     }
     ctx.throw(500)
   }
 })
 
+// async function hash(password:string) {
+//   return new Promise((resolve, reject) => {
+//     const salt = randomBytes(16).toString('hex')
+//     scrypt(password, salt, 64, async (err, derivedKey) => {
+//       if (err) reject(err)
+//       resolve(`${salt}:${derivedKey.toString('hex')}`)
+//     })
+//   })
+// }
+
+async function hash(password: string) {
+  return new Promise((resolve, reject) => {
+    bcrypt.genSalt(10, (_err, salt) => {
+      bcrypt.hash(password, salt, (err, hash) => {
+        if (err) reject(err)
+        resolve(hash)
+      })
+    })
+  })
+}
+
 // add a user
+// eslint-disable-next-line space-before-function-paren
 router.post("/register", async (ctx, _next) => {
   let { username, email, password } = ctx.request.body
 
@@ -89,35 +115,14 @@ router.post("/register", async (ctx, _next) => {
 
   try {
     // check if user exists before creating
-    let user = await userModel.findOne({ $or: [{ username }, { email }] })
+    let user = await UserModel.findOne({ $or: [{ username }, { email }] })
 
     // if user doesn't exist - create user
     if (!user) {
-      // hash password (scrypt)
-      // async function hash(password:string) {
-      //   return new Promise((resolve, reject) => {
-      //     const salt = randomBytes(16).toString('hex')
-      //     scrypt(password, salt, 64, async (err, derivedKey) => {
-      //       if (err) reject(err)
-      //       resolve(`${salt}:${derivedKey.toString('hex')}`)
-      //     })
-      //   })
-      // }
-
-      // hash password (bcrypt)
-      async function hash(password: string) {
-        return new Promise((resolve, reject) => {
-          bcrypt.genSalt(10, (_err, salt) => {
-            bcrypt.hash(password, salt, (err, hash) => {
-              if (err) reject(err)
-              resolve(hash)
-            })
-          })
-        })
-      }
+      hash(password)
 
       password = await hash(password)
-      user = await new userModel(
+      user = await new UserModel(
         _.extend(ctx.request.body, { password })
       ).save()
       ctx.status = 201
@@ -132,16 +137,17 @@ router.post("/register", async (ctx, _next) => {
 })
 
 // update a user
+// eslint-disable-next-line space-before-function-paren
 router.put("/:id", jwt, async (ctx, _next) => {
   try {
-    const user = await userModel.findByIdAndUpdate(
+    const user = await UserModel.findByIdAndUpdate(
       ctx.params.id,
       ctx.request.body
     )
     if (!user) {
       ctx.throw(404)
     }
-    ctx.body = await userModel.findById(ctx.params.id)
+    ctx.body = await UserModel.findById(ctx.params.id)
   } catch (err) {
     if (err.name === "CastError" || err.name === "NotFoundError") {
       ctx.throw(404, `user with the id ${ctx.params.id} not found`)
@@ -151,9 +157,10 @@ router.put("/:id", jwt, async (ctx, _next) => {
 })
 
 // delete a user
+// eslint-disable-next-line space-before-function-paren
 router.delete("/:id", jwt, async (ctx, _next) => {
   try {
-    const user = await userModel.findByIdAndRemove(ctx.params.id)
+    const user = await UserModel.findByIdAndRemove(ctx.params.id)
     if (!user) {
       ctx.throw(404)
     }
@@ -167,6 +174,7 @@ router.delete("/:id", jwt, async (ctx, _next) => {
 })
 
 // delete a user by username or email
+// eslint-disable-next-line space-before-function-paren
 router.put("/", jwt, async (ctx, _next) => {
   const { username, email } = ctx.request.body
 
@@ -181,8 +189,9 @@ router.put("/", jwt, async (ctx, _next) => {
   }
 
   try {
-    const user = await userModel.findOneAndRemove({
-      $or: [{ username }, { email }],
+    // eslint-disable-next-line space-before-function-paren
+    const user = await UserModel.findOneAndRemove({
+      $or: [{ username }, { email }]
     })
 
     if (!user) {
@@ -199,17 +208,18 @@ router.put("/", jwt, async (ctx, _next) => {
 })
 
 // auth user
+// eslint-disable-next-line space-before-function-paren
 router.post("/login", async (ctx, _next) => {
   const { username, password } = ctx.request.body
   const secret = process.env.JWT_SECRET
   try {
     const user = await Authenticate(username, password)
-    //create jwt
+    // create jwt
     ctx.status = 200
     ctx.body = {
       token: jsonwebtoken.sign({ role: "admin" }, secret!, { expiresIn: "1d" }),
       message: "Successful Authentication",
-      user: user,
+      user: user
     }
   } catch (err) {
     // user unauthorised

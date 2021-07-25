@@ -1,11 +1,24 @@
 module.exports = {
-  root: true,
-  parser: "@typescript-eslint/parser",
-  plugins: ["@typescript-eslint"],
+  env: {
+    browser: true,
+    es2021: true
+  },
   extends: [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "prettier",
-    "koa",
+    "koa"
   ],
+  parser: "@typescript-eslint/parser",
+  parserOptions: {
+    ecmaVersion: 12,
+    sourceType: "module"
+  },
+  plugins: ["@typescript-eslint"],
+  rules: {
+    indent: ["error", 2],
+    "linebreak-style": ["error", "unix"],
+    quotes: ["error", "double"],
+    semi: ["error", "never"]
+  }
 }

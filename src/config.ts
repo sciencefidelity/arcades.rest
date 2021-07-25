@@ -1,5 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config({ path: ".env" })
 
 export default {
-  JWT_SECRET: process.env.JWT_SECRET,
+  JWT_SECRET: process.env.JWT_SECRET
 }

@@ -1,7 +1,7 @@
-import koa = require("koa")
+import Koa = require("koa")
 import Router = require("koa-router")
 
-const app = new koa()
+const app = new Koa()
 const port = 3000
 const router = new Router()
 

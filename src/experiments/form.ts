@@ -13,10 +13,11 @@ const app = new Koa()
 const port = process.env.PORT || 3000
 const router = new Router()
 
+// eslint-disable-next-line no-unused-vars
 const pug = new Pug({
   viewPath: Path.resolve(__dirname, "./views"),
   basedir: Path.resolve(__dirname, "./views"),
-  app: app,
+  app: app
 })
 
 // set up body parsing middleware
@@ -24,10 +25,11 @@ app.use(
   Body({
     formidable: { uploadDir: "./uploads" },
     multipart: true,
-    urlencoded: true,
+    urlencoded: true
   })
 )
 
+// eslint-disable-next-line space-before-function-paren
 const renderForm = async (ctx: Koa.ParameterizedContext) => {
   await ctx.render("form")
 }

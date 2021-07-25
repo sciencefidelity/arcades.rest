@@ -8,6 +8,7 @@ const port = process.env.PORT || 3000
 const router = new Router()
 
 // custom 401 handling
+// eslint-disable-next-line space-before-function-paren
 app.use(async (ctx, next) => {
   try {
     await next()
@@ -23,12 +24,12 @@ app.use(async (ctx, next) => {
 })
 
 // unprotected route
-router.get("/protected", Auth(credentials), (ctx) => {
+router.get("/protected", Auth(credentials), ctx => {
   ctx.body = "You're on the guest list."
 })
 
 // protected route
-router.get("/unprotected", (ctx) => {
+router.get("/unprotected", ctx => {
   ctx.body = "Free for all!"
 })
 

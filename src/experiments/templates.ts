@@ -14,25 +14,26 @@ const port = process.env.PORT || 3000
 const router = new Router()
 
 // load html templates
+// eslint-disable-next-line no-unused-vars
 const pug = new Pug({
   viewPath: Path.resolve(__dirname, "./views"),
   basedir: Path.resolve(__dirname, "./views"),
-  app: app,
+  app: app
 })
 
 // load stylesheet
 const styles = Path.resolve(__dirname, "./public/style.css")
 
 // set up routes
-router.get("/:name", async (ctx) => {
+router.get("/:name", async ctx => {
   await ctx.render("index", {
     name: ctx.params.name.charAt(0).toUpperCase() + ctx.params.name.slice(1),
-    styles: styles,
+    styles: styles
   })
 })
 
 // handle 404 errors
-router.get("/not_found", async (ctx) => {
+router.get("/not_found", async ctx => {
   ctx.status = 404
   await ctx.render("404")
 })

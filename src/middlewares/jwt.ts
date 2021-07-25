@@ -10,5 +10,5 @@ if (config.JWT_SECRET) {
 }
 
 export default koaJwt({
-  secret,
+  secret
 })

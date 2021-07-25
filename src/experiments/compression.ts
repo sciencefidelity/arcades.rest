@@ -9,10 +9,11 @@ const app = new Koa()
 const port = process.env.PORT || 3000
 const router = new Router()
 
+// eslint-disable-next-line no-unused-vars
 const pug = new Pug({
   viewPath: Path.resolve(__dirname, "./views"),
   basedir: Path.resolve(__dirname, "./views"),
-  app: app,
+  app: app
 })
 
 // load stylesheet
@@ -20,23 +21,26 @@ const styles = Path.resolve(__dirname, "./public/style.css")
 
 app.use(
   Compress({
-    filter(content_type) {
-      return /text/i.test(content_type)
+    filter(contentType) {
+      return /text/i.test(contentType)
     },
     threshold: 2048,
     gzip: {
-      flush: require("zlib").constants.Z_SYNC_FLUSH,
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      flush: require("zlib").constants.Z_SYNC_FLUSH
     },
     deflate: {
-      flush: require("zlib").constants.Z_SYNC_FLUSH,
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      flush: require("zlib").constants.Z_SYNC_FLUSH
     },
-    br: false, // disable brotli
+    br: false // disable brotli
   })
 )
 
+// eslint-disable-next-line space-before-function-paren
 const getRoot = async (ctx: Koa.ParameterizedContext, next: Koa.Next) => {
   await ctx.render("index", {
-    styles: styles,
+    styles: styles
   })
   console.log(ctx.request)
   console.log(ctx.response)

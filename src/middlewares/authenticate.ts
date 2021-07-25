@@ -1,27 +1,28 @@
 import { compare } from "bcryptjs"
-import { userModel } from "../models/userSchema"
+import { UserModel } from "../models/userSchema"
 
 export const Authenticate = (username: string, password: string) => {
+  // eslint-disable-next-line space-before-function-paren
   return new Promise(async (resolve, reject) => {
     try {
-      //get user by email
-      const user = await userModel.findOne({ username })
+      // get user by email
+      const user = await UserModel.findOne({ username })
       if (!user) {
-        throw 422
+        throw Error("authentication failed")
       }
       // match password
       compare(password, user.password, (err, isMatch) => {
         if (err) throw err
         if (isMatch) {
-          resolve(user)
+          Promise.resolve(user)
         } else {
           // password didn't match
-          reject("authentication failed")
+          Promise.reject(new Error("authentication failed"))
         }
       })
     } catch (err) {
       // email not found
-      reject("authentication failed")
+      Promise.reject(new Error("authentication failed"))
     }
   })
 }

@@ -1,9 +1,9 @@
 import Koa from "koa"
-import { userModel } from "../models/userSchema"
+import { UserModel } from "../models/userSchema"
 
 class UsersControllers {
   async find(ctx: Koa.ParameterizedContext) {
-    ctx.body = await userModel.find()
+    ctx.body = await UserModel.find()
   }
 }
 

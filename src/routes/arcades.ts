@@ -1,13 +1,14 @@
 import Router from "koa-router"
-import { arcadesModel } from "../models/arcadesSchema"
+import { ArcadesModel } from "../models/arcadesSchema"
 import jwt from "../middlewares/jwt"
 
 const router = new Router({ prefix: "/arcades" })
 
 // get all arcades
+// eslint-disable-next-line space-before-function-paren
 router.get("/", async (ctx, _next) => {
   try {
-    ctx.body = await arcadesModel.find({})
+    ctx.body = await ArcadesModel.find({})
     if (!ctx.body[0]) ctx.throw(404)
   } catch (err) {
     ctx.status = err.status || 500
@@ -15,18 +16,19 @@ router.get("/", async (ctx, _next) => {
 })
 
 // add an arcade
+// eslint-disable-next-line space-before-function-paren
 router.post("/", jwt, async (ctx, _next) => {
-  let { index } = ctx.request.body
+  const { index } = ctx.request.body
   // check if data is application/json
   if (!ctx.is("application/json")) {
     ctx.throw(412, "content-Type must be application/json")
   }
   try {
     // check if the arcade exists before creating
-    let arcade = await arcadesModel.findOne({ index })
+    let arcade = await ArcadesModel.findOne({ index })
     // if arcade doesn't exist - create arcade
     if (!arcade) {
-      arcade = await new arcadesModel(ctx.request.body).save()
+      arcade = await new ArcadesModel(ctx.request.body).save()
       ctx.status = 201
     }
     ctx.body = arcade
@@ -37,13 +39,14 @@ router.post("/", jwt, async (ctx, _next) => {
 })
 
 // find by tag in json
+// eslint-disable-next-line space-before-function-paren
 router.post("/find", async (ctx, _next) => {
   const { tags } = ctx.request.body
 
-  let errorMessage = `${tags} not found`
+  const errorMessage = `${tags} not found`
 
   try {
-    const arcade = await arcadesModel.findOne({ tags })
+    const arcade = await ArcadesModel.findOne({ tags })
 
     if (!arcade) {
       ctx.throw(404)
@@ -52,7 +55,7 @@ router.post("/find", async (ctx, _next) => {
     ctx.body = arcade
   } catch (err) {
     if (err.name === "CastError" || err.name === "NotFoundError") {
-      ctx.response.status
+      // ctx.response.status
       ctx.throw(404, errorMessage)
     }
     ctx.throw(500)
@@ -60,9 +63,10 @@ router.post("/find", async (ctx, _next) => {
 })
 
 // delete an arcade
+// eslint-disable-next-line space-before-function-paren
 router.delete("/:id", jwt, async (ctx, _next) => {
   try {
-    const user = await arcadesModel.findByIdAndRemove(ctx.params.id)
+    const user = await ArcadesModel.findByIdAndRemove(ctx.params.id)
     if (!user) {
       ctx.throw(404)
     }

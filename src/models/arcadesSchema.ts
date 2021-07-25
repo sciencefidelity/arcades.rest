@@ -18,23 +18,23 @@ const ArcadesSchema = new Schema<Arcade>(
     convolute: {
       type: Object,
       required: true,
-      strict: true,
+      strict: true
     },
     text: {
       type: Object,
-      strict: true,
+      strict: true
     },
     index: {
       type: String,
       required: true,
-      strict: true,
+      strict: true
     },
     tags: {
       type: Array,
-      strict: true,
-    },
+      strict: true
+    }
   },
   { timestamps: { createdAt: "createdAt" } }
 )
 
-export const arcadesModel = model<Arcade>("Arcade", ArcadesSchema)
+export const ArcadesModel = model<Arcade>("Arcade", ArcadesSchema)

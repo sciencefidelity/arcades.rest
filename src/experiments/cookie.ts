@@ -9,7 +9,7 @@ const setCookie = (ctx: Koa.ParameterizedContext) => {
   // expires after 360000 ms
   ctx.cookies.set("name", "matt", {
     httpOnly: false,
-    expires: new Date(360000 + Date.now()),
+    expires: new Date(360000 + Date.now())
   })
   console.log("Cookies: name =", ctx.cookies.get("name"))
 }

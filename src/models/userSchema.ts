@@ -14,32 +14,32 @@ const UserSchema = new Schema<User>(
     firstName: {
       type: String,
       required: true,
-      strict: true,
+      strict: true
     },
     lastName: {
       type: String,
       required: true,
-      strict: true,
+      strict: true
     },
     username: {
       type: String,
       required: true,
-      strict: true,
+      strict: true
     },
     email: {
       type: String,
       required: true,
       strict: true,
-      trim: true,
+      trim: true
     },
     password: {
       type: String,
       required: true,
-      strict: true,
+      strict: true
     },
-    avatar: String,
+    avatar: String
   },
   { timestamps: { createdAt: "createdAt" } }
 )
 
-export const userModel = model<User>("User", UserSchema)
+export const UserModel = model<User>("User", UserSchema)

@@ -13,17 +13,18 @@ const app = new Koa()
 const port = process.env.PORT || 3000
 const router = new Router()
 
+// eslint-disable-next-line no-unused-vars
 const pug = new Pug({
   viewPath: Path.resolve(__dirname, "./views"),
   basedir: Path.resolve(__dirname, "./views"),
-  app: app,
+  app: app
 })
 
 app.use(
   koaBody({
     formidable: { uploadDir: Path.resolve(__dirname, "./uploads") },
     multipart: true,
-    urlencoded: true,
+    urlencoded: true
   })
 )
 
