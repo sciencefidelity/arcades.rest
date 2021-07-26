@@ -1,9 +1,9 @@
 import glob from "glob"
 
-type Routes = any[]
+type Routes = string[]
 
 // eslint-disable-next-line space-before-function-paren
-export const RoutesLoader = (dirname: any) => {
+export const RoutesLoader = (dirname: string): any => {
   return new Promise((resolve, reject) => {
     const routes: Routes = []
     glob(
