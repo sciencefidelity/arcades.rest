@@ -207,13 +207,13 @@ router.post("/login", async (ctx, _next) => {
         token: jsonwebtoken.sign({ role: "admin" }, secret, {
           expiresIn: "1d"
         }),
-        message: "Authentication successful",
+        message: "authentication successful",
         user: user
       }
     }
   } catch (err) {
     // user unauthorised
-    ctx.throw(401, "Unauthorised")
+    ctx.throw(401, "unauthorised")
   }
 })
 

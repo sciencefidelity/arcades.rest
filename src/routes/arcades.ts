@@ -43,20 +43,15 @@ router.post("/", jwt, async (ctx, _next) => {
 // eslint-disable-next-line space-before-function-paren, @typescript-eslint/no-unused-vars
 router.post("/find", async (ctx, _next) => {
   const { tags } = ctx.request.body
-
   const errorMessage = `${tags} not found`
-
   try {
     const arcade = await ArcadesModel.findOne({ tags })
-
     if (!arcade) {
       ctx.throw(404)
     }
-
     ctx.body = arcade
   } catch (err) {
     if (err.name === "CastError" || err.name === "NotFoundError") {
-      ctx.response.status
       ctx.throw(404, errorMessage)
     }
     ctx.throw(500)
@@ -74,7 +69,7 @@ router.delete("/:id", jwt, async (ctx, _next) => {
     ctx.body = user
   } catch (err) {
     if (err.name === "CastError" || err.name === "NotFoundError") {
-      ctx.throw(404, `user with the id ${ctx.params.id} not found`)
+      ctx.throw(404, `arcade with the id ${ctx.params.id} not found`)
     }
     ctx.throw(500)
   }
