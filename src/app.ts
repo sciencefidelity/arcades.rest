@@ -13,14 +13,11 @@ dotenv.config({ path: ".env" })
 
 // conect to DB
 const connectionString = process.env.MONGO_ATLAS_STRING
-
-if (connectionString) {
-  Mongoose.connect(connectionString, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false
-  })
-}
+Mongoose.connect(connectionString!, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false
+})
 Mongoose.connection.on("error", console.error)
 
 // init koa server
@@ -29,7 +26,6 @@ const port = process.env.PORT || 3000
 
 // get the local network address
 let address: string
-
 // eslint-disable-next-line array-callback-return
 networkInterfaces().en0?.filter(details => {
   if (details.family === "IPv4") {

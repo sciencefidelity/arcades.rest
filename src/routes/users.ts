@@ -76,14 +76,14 @@ router.post("/find", jwt, async (ctx, _next) => {
     ctx.body = user
   } catch (err) {
     if (err.name === "CastError" || err.name === "NotFoundError") {
-      // ctx.response.status
+      ctx.response.status
       ctx.throw(404, errorMessage)
     }
     ctx.throw(500)
   }
 })
 
-// async function hash(password:string) {
+// const hash = (password:string) => {
 //   return new Promise((resolve, reject) => {
 //     const salt = randomBytes(16).toString('hex')
 //     scrypt(password, salt, 64, async (err, derivedKey) => {
@@ -92,17 +92,6 @@ router.post("/find", jwt, async (ctx, _next) => {
 //     })
 //   })
 // }
-
-async function hash(password: string) {
-  return new Promise((resolve, reject) => {
-    bcrypt.genSalt(10, (_err, salt) => {
-      bcrypt.hash(password, salt, (err, hash) => {
-        if (err) reject(err)
-        resolve(hash)
-      })
-    })
-  })
-}
 
 // add a user
 // eslint-disable-next-line space-before-function-paren, @typescript-eslint/no-unused-vars
@@ -120,7 +109,16 @@ router.post("/register", async (ctx, _next) => {
 
     // if user doesn't exist - create user
     if (!user) {
-      hash(password)
+      async function hash(password: string) {
+        return new Promise((resolve, reject) => {
+          bcrypt.genSalt(10, (_err, salt) => {
+            bcrypt.hash(password, salt, (err, hash) => {
+              if (err) reject(err)
+              resolve(hash)
+            })
+          })
+        })
+      }
 
       password = await hash(password)
       user = await new UserModel(
@@ -219,7 +217,7 @@ router.post("/login", async (ctx, _next) => {
     ctx.status = 200
     ctx.body = {
       token: jsonwebtoken.sign({ role: "admin" }, secret!, { expiresIn: "1d" }),
-      message: "Successful Authentication",
+      message: "Authentication successful",
       user: user
     }
   } catch (err) {

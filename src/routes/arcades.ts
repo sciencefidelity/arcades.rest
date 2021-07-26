@@ -56,7 +56,7 @@ router.post("/find", async (ctx, _next) => {
     ctx.body = arcade
   } catch (err) {
     if (err.name === "CastError" || err.name === "NotFoundError") {
-      // ctx.response.status
+      ctx.response.status
       ctx.throw(404, errorMessage)
     }
     ctx.throw(500)

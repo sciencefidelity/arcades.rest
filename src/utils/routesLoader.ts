@@ -3,7 +3,7 @@ import glob from "glob"
 type Routes = any[]
 
 // eslint-disable-next-line space-before-function-paren
-export default function (dirname: any) {
+export const RoutesLoader = (dirname: any) => {
   return new Promise((resolve, reject) => {
     const routes: Routes = []
     glob(
