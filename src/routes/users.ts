@@ -204,7 +204,9 @@ router.post("/login", async (ctx, _next) => {
     ctx.status = 200
     if (secret) {
       ctx.body = {
-        token: jsonwebtoken.sign({ role: "admin" }, secret, { expiresIn: "1d" }),
+        token: jsonwebtoken.sign({ role: "admin" }, secret, {
+          expiresIn: "1d"
+        }),
         message: "Authentication successful",
         user: user
       }
