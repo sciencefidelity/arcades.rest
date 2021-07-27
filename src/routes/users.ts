@@ -1,11 +1,9 @@
-import bcrypt from "bcryptjs"
-// import { scrypt, randomBytes } from "crypto"
 import jsonwebtoken from "jsonwebtoken"
-// import koaJwt from "koa-jwt"
 import Router from "koa-router"
 import _ from "underscore"
 
-import { Authenticate } from "../middlewares/authenticate"
+import { bcryptHash } from "../middlewares/hash"
+import Authenticate from "../middlewares/authenticate"
 import jwt from "../middlewares/jwt"
 import { UserModel } from "../models/userSchema"
 
@@ -67,7 +65,7 @@ router.post("/find", jwt, async (ctx, _next) => {
   try {
     const user = await UserModel.findOne({ $or: [{ username }, { email }] })
     if (!user) {
-      ctx.throw(404)
+      ctx.throw(404, "not found")
     }
     ctx.body = user
   } catch (err) {
@@ -77,29 +75,6 @@ router.post("/find", jwt, async (ctx, _next) => {
     ctx.throw(500)
   }
 })
-
-// hash password with scrypt
-// async function hash(password:string) {
-//   return new Promise((resolve, reject) => {
-//     const salt = randomBytes(16).toString('hex')
-//     scrypt(password, salt, 64, async (err, derivedKey) => {
-//       if (err) reject(err)
-//       resolve(`${salt}:${derivedKey.toString('hex')}`)
-//     })
-//   })
-// }
-
-// hash password with bcrypt
-async function hash(password: string) {
-  return new Promise((resolve, reject) => {
-    bcrypt.genSalt(10, (_err, salt) => {
-      bcrypt.hash(password, salt, (err, hash) => {
-        if (err) reject(err)
-        resolve(hash)
-      })
-    })
-  })
-}
 
 // add a user
 // eslint-disable-next-line space-before-function-paren, @typescript-eslint/no-unused-vars
@@ -114,7 +89,7 @@ router.post("/register", async (ctx, _next) => {
     let user = await UserModel.findOne({ $or: [{ username }, { email }] })
     // if user doesn't exist - create user
     if (!user) {
-      password = await hash(password)
+      password = await bcryptHash(password)
       user = await new UserModel(
         _.extend(ctx.request.body, { password })
       ).save()

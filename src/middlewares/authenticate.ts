@@ -1,10 +1,10 @@
 import { compare } from "bcryptjs"
 import { UserModel } from "../models/userSchema"
 
-export const Authenticate = (username:string, password:string): Promise<unknown> => {
+const Authenticate = (username: string, password: string): Promise<unknown> => {
   return new Promise((resolve, reject) => {
     // eslint-disable-next-line space-before-function-paren
-    (async () => {
+    ;(async () => {
       try {
         // get user by email
         const user = await UserModel.findOne({ username })
@@ -30,3 +30,5 @@ export const Authenticate = (username:string, password:string): Promise<unknown>
     })()
   })
 }
+
+export default Authenticate
