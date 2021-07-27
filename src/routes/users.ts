@@ -213,7 +213,10 @@ router.post("/login", async (ctx, _next) => {
     }
   } catch (err) {
     // user unauthorised
-    ctx.throw(401, "unauthorised")
+    ctx.status = 401
+    ctx.body = {
+      message: "unauthorised"
+    }
   }
 })
 
