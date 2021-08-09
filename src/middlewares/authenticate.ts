@@ -11,18 +11,16 @@ const Authenticate = (username: string, password: string): Promise<unknown> => {
         if (!user) {
           throw new Error("authentication failed")
         }
-        if (user) {
-          // match password
-          compare(password, user.password, (err, isMatch) => {
-            if (err) throw err
-            if (isMatch) {
-              resolve(user)
-            } else {
-              // password didn't match
-              reject(new Error("authentication failed"))
-            }
-          })
-        }
+        // match password
+        compare(password, user.password, (err, isMatch) => {
+          if (err) throw err
+          if (isMatch) {
+            resolve(user)
+          } else {
+            // password didn't match
+            reject(new Error("authentication failed"))
+          }
+        })
       } catch (err) {
         // email not found
         reject(new Error("authentication failed"))
