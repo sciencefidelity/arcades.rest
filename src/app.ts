@@ -14,11 +14,7 @@ dotenv.config({ path: ".env" })
 // conect to DB
 const connectionString = process.env.MONGO_ATLAS_STRING
 if (connectionString) {
-  Mongoose.connect(connectionString, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false
-  })
+  Mongoose.connect(connectionString)
 }
 Mongoose.connection.on("error", console.error)
 
