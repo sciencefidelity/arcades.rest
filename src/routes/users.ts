@@ -5,7 +5,7 @@ import _ from "underscore"
 import { bcryptHash } from "../middlewares/hash"
 import Authenticate from "../middlewares/authenticate"
 import jwt from "../middlewares/jwt"
-import { UserModel } from "../models/userSchema"
+import { User } from "../models/userSchema"
 
 const router = new Router({ prefix: "/users" })
 
@@ -13,7 +13,7 @@ const router = new Router({ prefix: "/users" })
 // eslint-disable-next-line space-before-function-paren, @typescript-eslint/no-unused-vars
 router.get("/", jwt, async (ctx, _next) => {
   try {
-    ctx.body = await UserModel.find({})
+    ctx.body = await User.find({})
     if (!ctx.body[0]) ctx.throw(404)
   } catch (err) {
     ctx.status = err.status || 500
@@ -24,7 +24,7 @@ router.get("/", jwt, async (ctx, _next) => {
 // eslint-disable-next-line space-before-function-paren, @typescript-eslint/no-unused-vars
 router.get("/:id", jwt, async (ctx, _next) => {
   try {
-    const user = await UserModel.findById(ctx.params.id)
+    const user = await User.findById(ctx.params.id)
     if (!user) {
       ctx.throw(404)
     }
@@ -41,7 +41,7 @@ router.get("/:id", jwt, async (ctx, _next) => {
 // eslint-disable-next-line space-before-function-paren, @typescript-eslint/no-unused-vars
 router.get("/username/:name", jwt, async (ctx, _next) => {
   try {
-    const user = await UserModel.findOne({ username: ctx.params.name })
+    const user = await User.findOne({ username: ctx.params.name })
     if (!user) {
       ctx.throw(404)
     }
@@ -63,7 +63,7 @@ router.post("/find", jwt, async (ctx, _next) => {
     errorMessage = `email address ${email} not found`
   }
   try {
-    const user = await UserModel.findOne({ $or: [{ username }, { email }] })
+    const user = await User.findOne({ $or: [{ username }, { email }] })
     if (!user) {
       ctx.throw(404, "not found")
     }
@@ -86,11 +86,11 @@ router.post("/register", async (ctx, _next) => {
   }
   try {
     // check if user exists before creating
-    let user = await UserModel.findOne({ $or: [{ username }, { email }] })
+    let user = await User.findOne({ $or: [{ username }, { email }] })
     // if user doesn't exist - create user
     if (!user) {
       password = await bcryptHash(password)
-      user = await new UserModel(
+      user = await new User(
         _.extend(ctx.request.body, { password })
       ).save()
       ctx.status = 201
@@ -106,14 +106,14 @@ router.post("/register", async (ctx, _next) => {
 // eslint-disable-next-line space-before-function-paren, @typescript-eslint/no-unused-vars
 router.put("/:id", jwt, async (ctx, _next) => {
   try {
-    const user = await UserModel.findByIdAndUpdate(
+    const user = await User.findByIdAndUpdate(
       ctx.params.id,
       ctx.request.body
     )
     if (!user) {
       ctx.throw(404)
     }
-    ctx.body = await UserModel.findById(ctx.params.id)
+    ctx.body = await User.findById(ctx.params.id)
   } catch (err) {
     if (err.name === "CastError" || err.name === "NotFoundError") {
       ctx.throw(404, `user with the id ${ctx.params.id} not found`)
@@ -126,7 +126,7 @@ router.put("/:id", jwt, async (ctx, _next) => {
 // eslint-disable-next-line space-before-function-paren, @typescript-eslint/no-unused-vars
 router.delete("/:id", jwt, async (ctx, _next) => {
   try {
-    const user = await UserModel.findByIdAndRemove(ctx.params.id)
+    const user = await User.findByIdAndRemove(ctx.params.id)
     if (!user) {
       ctx.throw(404)
     }
@@ -153,7 +153,7 @@ router.put("/", jwt, async (ctx, _next) => {
   }
   try {
     // eslint-disable-next-line space-before-function-paren
-    const user = await UserModel.findOneAndRemove({
+    const user = await User.findOneAndRemove({
       $or: [{ username }, { email }]
     })
     if (!user) {

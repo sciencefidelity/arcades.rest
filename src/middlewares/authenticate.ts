@@ -1,5 +1,5 @@
 import { compare } from "bcryptjs"
-import { UserModel } from "../models/userSchema"
+import { User } from "../models/userSchema"
 
 const Authenticate = (username: string, password: string): Promise<unknown> => {
   return new Promise((resolve, reject) => {
@@ -7,7 +7,7 @@ const Authenticate = (username: string, password: string): Promise<unknown> => {
     ;(async () => {
       try {
         // get user by email
-        const user = await UserModel.findOne({ username })
+        const user = await User.findOne({ username })
         if (!user) {
           throw new Error("authentication failed")
         }

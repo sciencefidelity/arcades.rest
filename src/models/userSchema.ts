@@ -1,6 +1,6 @@
-import { Schema, model } from "mongoose"
+import { model, Model, Document, Schema } from "mongoose"
 
-interface User {
+interface IUser extends Document {
   firstName: string
   lastName: string
   username: string
@@ -9,7 +9,7 @@ interface User {
   avatar?: string
 }
 
-const UserSchema = new Schema<User>(
+const UserSchema: Schema = new Schema(
   {
     firstName: {
       type: String,
@@ -42,4 +42,4 @@ const UserSchema = new Schema<User>(
   { timestamps: { createdAt: "createdAt" } }
 )
 
-export const UserModel = model<User>("User", UserSchema)
+export const User: Model<IUser> = model("User", UserSchema)
