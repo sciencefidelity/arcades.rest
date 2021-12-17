@@ -1,6 +1,6 @@
-import { Schema, model } from "mongoose"
+import { model, Model, Document, Schema } from "mongoose"
 
-interface Arcade {
+interface IArcade extends Document {
   convolute: {
     letter: string
     title: string
@@ -13,7 +13,7 @@ interface Arcade {
   tags?: string[]
 }
 
-const ArcadesSchema = new Schema<Arcade>(
+const ArcadesSchema: Schema = new Schema(
   {
     convolute: {
       type: Object,
@@ -37,4 +37,4 @@ const ArcadesSchema = new Schema<Arcade>(
   { timestamps: { createdAt: "createdAt" } }
 )
 
-export const ArcadesModel = model<Arcade>("Arcade", ArcadesSchema)
+export const Arcade: Model<IArcade> = model("Arcade", ArcadesSchema)

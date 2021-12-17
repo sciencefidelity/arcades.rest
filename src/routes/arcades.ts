@@ -1,6 +1,6 @@
 import Router from "koa-router"
 
-import { ArcadesModel } from "../models/arcadesSchema"
+import { Arcade } from "../models/arcadesSchema"
 import jwt from "../middlewares/jwt"
 
 const router = new Router({ prefix: "/arcades" })
@@ -9,7 +9,7 @@ const router = new Router({ prefix: "/arcades" })
 // eslint-disable-next-line space-before-function-paren, @typescript-eslint/no-unused-vars
 router.get("/", async (ctx, _next) => {
   try {
-    ctx.body = await ArcadesModel.find({})
+    ctx.body = await Arcade.find({})
     if (!ctx.body[0]) ctx.throw(404)
   } catch (err) {
     ctx.status = err.status || 500
@@ -26,10 +26,10 @@ router.post("/", jwt, async (ctx, _next) => {
   }
   try {
     // check if the arcade exists before creating
-    let arcade = await ArcadesModel.findOne({ index })
+    let arcade = await Arcade.findOne({ index })
     // if arcade doesn't exist - create arcade
     if (!arcade) {
-      arcade = await new ArcadesModel(ctx.request.body).save()
+      arcade = await new Arcade(ctx.request.body).save()
       ctx.status = 201
     }
     ctx.body = arcade
@@ -45,7 +45,7 @@ router.post("/find", async (ctx, _next) => {
   const { tags } = ctx.request.body
   const errorMessage = `${tags} not found`
   try {
-    const arcade = await ArcadesModel.findOne({ tags })
+    const arcade = await Arcade.findOne({ tags })
     if (!arcade) {
       ctx.throw(404)
     }
@@ -62,7 +62,7 @@ router.post("/find", async (ctx, _next) => {
 // eslint-disable-next-line space-before-function-paren, @typescript-eslint/no-unused-vars
 router.delete("/:id", jwt, async (ctx, _next) => {
   try {
-    const user = await ArcadesModel.findByIdAndRemove(ctx.params.id)
+    const user = await Arcade.findByIdAndRemove(ctx.params.id)
     if (!user) {
       ctx.throw(404)
     }
