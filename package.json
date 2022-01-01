@@ -38,7 +38,7 @@
     "koa-json-error": "^3.1.2",
     "koa-jwt": "^4.0.3",
     "koa-router": "^10.1.1",
-    "mongoose": "^6.0.14",
+    "mongoose": "^6.1.4",
     "underscore": "^1.13.1"
   },
   "devDependencies": {
