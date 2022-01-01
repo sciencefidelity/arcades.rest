@@ -811,10 +811,10 @@
   dependencies:
     "@types/koa" "*"
 
-"@types/koa-json-error@^3.1.3":
-  version "3.1.3"
-  resolved "https://registry.yarnpkg.com/@types/koa-json-error/-/koa-json-error-3.1.3.tgz#303c864cec6380c7336558da7504a7f0d9494f03"
-  integrity sha512-aEc1TDZc3IyqsFOd2K65IhBXjcKDPusBPG9SEb6Th6U4aA8Ux8ZoQ0GoYDMlr0nOFBOjoc8g2MWfWdQC797+Rw==
+"@types/koa-json-error@^3.1.4":
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/@types/koa-json-error/-/koa-json-error-3.1.4.tgz#d1a95aea8c2e319c58c2c240cfa48754ebfcb9d1"
+  integrity sha512-vmZLjo1GScAxI4IJLCoCEl7X2NgnjJdRZJGEy+/66olCIK+DBi766Cntgr1RhmdbFp3QRhNxJHxJE4O2IqtuRQ==
   dependencies:
     "@types/koa" "*"
 
