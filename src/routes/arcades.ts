@@ -6,7 +6,6 @@ import jwt from "../middlewares/jwt"
 const router = new Router({ prefix: "/arcades" })
 
 // get all arcades
-// eslint-disable-next-line space-before-function-paren, @typescript-eslint/no-unused-vars
 router.get("/", async (ctx, _next) => {
   try {
     ctx.body = await Arcade.find({})
@@ -17,7 +16,6 @@ router.get("/", async (ctx, _next) => {
 })
 
 // add an arcade
-// eslint-disable-next-line space-before-function-paren, @typescript-eslint/no-unused-vars
 router.post("/", jwt, async (ctx, _next) => {
   const { index } = ctx.request.body
   // check if data is application/json
@@ -40,7 +38,6 @@ router.post("/", jwt, async (ctx, _next) => {
 })
 
 // find by tag in json
-// eslint-disable-next-line space-before-function-paren, @typescript-eslint/no-unused-vars
 router.post("/find", async (ctx, _next) => {
   const { tags } = ctx.request.body
   const errorMessage = `${tags} not found`
@@ -59,7 +56,6 @@ router.post("/find", async (ctx, _next) => {
 })
 
 // delete an arcade
-// eslint-disable-next-line space-before-function-paren, @typescript-eslint/no-unused-vars
 router.delete("/:id", jwt, async (ctx, _next) => {
   try {
     const user = await Arcade.findByIdAndRemove(ctx.params.id)

@@ -2,7 +2,6 @@ import glob from "glob"
 
 type Routes = string[]
 
-// eslint-disable-next-line space-before-function-paren
 export const RoutesLoader = (dirname: string): Promise<Routes> => {
   return new Promise((resolve, reject) => {
     const routes: Routes = []

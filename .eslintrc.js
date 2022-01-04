@@ -20,6 +20,22 @@ module.exports = {
     indent: ["error", 2],
     "linebreak-style": ["error", "unix"],
     quotes: ["error", "double"],
-    semi: ["error", "never"]
+    semi: ["error", "never"],
+    "space-before-function-paren": [
+      "error",
+      {
+        anonymous: "always",
+        named: "never",
+        asyncArrow: "always"
+      }
+    ],
+    "no-unused-vars": [
+      "warn",
+      { varsIgnorePattern: "[iI]gnored", argsIgnorePattern: "^_" }
+    ],
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      { varsIgnorePattern: "[iI]gnored", argsIgnorePattern: "^_" }
+    ]
   }
 }

@@ -3,7 +3,6 @@ import { User } from "../models/userSchema"
 
 const Authenticate = (username: string, password: string): Promise<unknown> => {
   return new Promise((resolve, reject) => {
-    // eslint-disable-next-line space-before-function-paren
     ;(async () => {
       try {
         // get user by email

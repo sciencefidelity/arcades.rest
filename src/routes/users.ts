@@ -10,7 +10,6 @@ import { User } from "../models/userSchema"
 const router = new Router({ prefix: "/users" })
 
 // get all users
-// eslint-disable-next-line space-before-function-paren, @typescript-eslint/no-unused-vars
 router.get("/", jwt, async (ctx, _next) => {
   try {
     ctx.body = await User.find({})
@@ -21,7 +20,6 @@ router.get("/", jwt, async (ctx, _next) => {
 })
 
 // find a user by id
-// eslint-disable-next-line space-before-function-paren, @typescript-eslint/no-unused-vars
 router.get("/:id", jwt, async (ctx, _next) => {
   try {
     const user = await User.findById(ctx.params.id)
@@ -38,7 +36,6 @@ router.get("/:id", jwt, async (ctx, _next) => {
 })
 
 // find by username in url
-// eslint-disable-next-line space-before-function-paren, @typescript-eslint/no-unused-vars
 router.get("/username/:name", jwt, async (ctx, _next) => {
   try {
     const user = await User.findOne({ username: ctx.params.name })
@@ -55,7 +52,6 @@ router.get("/username/:name", jwt, async (ctx, _next) => {
 })
 
 // find by username or email in json
-// eslint-disable-next-line space-before-function-paren, @typescript-eslint/no-unused-vars
 router.post("/find", jwt, async (ctx, _next) => {
   const { username, email } = ctx.request.body
   let errorMessage = `user ${username} not found`
@@ -77,7 +73,6 @@ router.post("/find", jwt, async (ctx, _next) => {
 })
 
 // add a user
-// eslint-disable-next-line space-before-function-paren, @typescript-eslint/no-unused-vars
 router.post("/register", async (ctx, _next) => {
   let { username, email, password } = ctx.request.body
   // check if data is application/json
@@ -90,9 +85,7 @@ router.post("/register", async (ctx, _next) => {
     // if user doesn't exist - create user
     if (!user) {
       password = await bcryptHash(password)
-      user = await new User(
-        _.extend(ctx.request.body, { password })
-      ).save()
+      user = await new User(_.extend(ctx.request.body, { password })).save()
       ctx.status = 201
     }
     ctx.body = user
@@ -103,13 +96,9 @@ router.post("/register", async (ctx, _next) => {
 })
 
 // update a user
-// eslint-disable-next-line space-before-function-paren, @typescript-eslint/no-unused-vars
 router.put("/:id", jwt, async (ctx, _next) => {
   try {
-    const user = await User.findByIdAndUpdate(
-      ctx.params.id,
-      ctx.request.body
-    )
+    const user = await User.findByIdAndUpdate(ctx.params.id, ctx.request.body)
     if (!user) {
       ctx.throw(404)
     }
@@ -123,7 +112,6 @@ router.put("/:id", jwt, async (ctx, _next) => {
 })
 
 // delete a user
-// eslint-disable-next-line space-before-function-paren, @typescript-eslint/no-unused-vars
 router.delete("/:id", jwt, async (ctx, _next) => {
   try {
     const user = await User.findByIdAndRemove(ctx.params.id)
@@ -140,7 +128,6 @@ router.delete("/:id", jwt, async (ctx, _next) => {
 })
 
 // delete a user by username or email
-// eslint-disable-next-line space-before-function-paren, @typescript-eslint/no-unused-vars
 router.put("/", jwt, async (ctx, _next) => {
   const { username, email } = ctx.request.body
   let errorMessage = `user ${username} not found`
@@ -152,7 +139,6 @@ router.put("/", jwt, async (ctx, _next) => {
     ctx.throw(412, "content-Type must be application/json")
   }
   try {
-    // eslint-disable-next-line space-before-function-paren
     const user = await User.findOneAndRemove({
       $or: [{ username }, { email }]
     })
@@ -169,7 +155,6 @@ router.put("/", jwt, async (ctx, _next) => {
 })
 
 // auth user
-// eslint-disable-next-line space-before-function-paren, @typescript-eslint/no-unused-vars
 router.post("/login", async (ctx, _next) => {
   const { username, password } = ctx.request.body
   const secret = process.env.JWT_SECRET

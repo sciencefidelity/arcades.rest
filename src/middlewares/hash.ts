@@ -5,7 +5,6 @@ import { scrypt, randomBytes } from "crypto"
 export async function scryptHash(password: string): Promise<string> {
   return new Promise((resolve, reject) => {
     const salt = randomBytes(16).toString("hex")
-    // eslint-disable-next-line space-before-function-paren
     scrypt(password, salt, 64, async (err, derivedKey) => {
       if (err) reject(err)
       resolve(`${salt}:${derivedKey.toString("hex")}`)
