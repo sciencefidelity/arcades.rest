@@ -9,6 +9,9 @@ node_modules
 *.css.map
 .env
 
+# linux
+tags
+
 # typescript
 dist
 
