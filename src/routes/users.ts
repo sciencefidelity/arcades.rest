@@ -2,10 +2,10 @@ import jsonwebtoken from "jsonwebtoken"
 import Router from "koa-router"
 import _ from "underscore"
 
-import { bcryptHash } from "../middlewares/hash"
-import Authenticate from "../middlewares/authenticate"
-import jwt from "../middlewares/jwt"
-import { User } from "../models/userSchema"
+import { bcryptHash } from "middlewares/hash"
+import Authenticate from "middlewares/authenticate"
+import jwt from "middlewares/jwt"
+import { User } from "models/userSchema"
 
 const router = new Router({ prefix: "/users" })
 

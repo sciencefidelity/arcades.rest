@@ -6,9 +6,9 @@ import error from "koa-json-error"
 import Mongoose from "mongoose"
 import { networkInterfaces } from "os"
 
-// import arcadesRoute from "routes/arcades"
+import arcadesRoute from "routes/arcades"
 import mainRoute from "routes/index"
-// import usersRoute from "routes/users"
+import usersRoute from "routes/users"
 
 dotenv.config({ path: ".env" })
 
@@ -44,11 +44,13 @@ app.use(
 app
   .use(mainRoute.routes())
   .use(mainRoute.allowedMethods())
-  // .use(arcadesRoute.routes())
-  // .use(arcadesRoute.allowedMethods())
-  // .use(usersRoute.routes())
-  // .use(usersRoute.allowedMethods())
-  .use(error())
+  .use(arcadesRoute.routes())
+  .use(arcadesRoute.allowedMethods())
+  .use(usersRoute.routes())
+  .use(usersRoute.allowedMethods())
+  .use(error({
+    preFormat: err => Object.assign({}, err)
+  }))
 
 // start server
 app.listen(port, () => {
