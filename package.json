@@ -29,6 +29,13 @@
     "start": "node .",
     "test": "jest"
   },
+  "_moduleAliases": {
+    "controllers": "src/controllers",
+    "middlewares": "src/middlewares",
+    "models": "src/models",
+    "routes": "src/routes",
+    "utils": "src/utils/*"
+  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^8.5.1",
@@ -38,6 +45,7 @@
     "koa-json-error": "^3.1.2",
     "koa-jwt": "^4.0.3",
     "koa-router": "^10.1.1",
+    "module-alias": "^2.2.2",
     "mongoose": "^6.2.9",
     "underscore": "^1.13.2"
   },
