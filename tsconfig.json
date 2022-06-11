@@ -3,13 +3,13 @@
     "module": "commonjs",
     "target": "es6",
     "strict": true,
-    "moduleResolution": "node",
+    "moduleResolution": "node12",
     "resolveJsonModule": true,
     "allowJs": true,
     "checkJs": false,
     "sourceMap": true,
     "outDir": "dist",
-    "baseUrl": ".",
+    "baseUrl": "./",
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "types": [
@@ -31,8 +31,12 @@
       "underscore"
     ],
     "paths": {
-      "~/*": ["./src/*"],
-      "@/*": ["./src/*"]
+      "*" : ["types/*", "*"],
+      "controllers/*": ["src/controllers/*"],
+      "middlewares/*": ["src/middlewares/*"],
+      "models/*": ["src/models/*"],
+      "routes/*": ["src/routes/*"],
+      "src/utils/*": ["src/utils/*"]
     }
   },
   "include": ["src/*", "src/**/*"],

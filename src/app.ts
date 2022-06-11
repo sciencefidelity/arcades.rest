@@ -4,10 +4,9 @@ import koaBody from "koa-body"
 import error from "koa-json-error"
 import Mongoose from "mongoose"
 import { networkInterfaces } from "os"
-
-import arcadesRoute from "./routes/arcades"
-import mainRoute from "./routes/index"
-import usersRoute from "./routes/users"
+import arcadesRoute from "routes/arcades"
+import mainRoute from "routes/index"
+import usersRoute from "routes/users"
 
 dotenv.config({ path: ".env" })
 
