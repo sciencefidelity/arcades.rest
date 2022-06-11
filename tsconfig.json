@@ -12,6 +12,7 @@
     "baseUrl": "./",
     "esModuleInterop": true,
     "experimentalDecorators": true,
+    "useUnknownInCatchVariables": false,
     "types": [
       "bcryptjs",
       "glob",
@@ -36,7 +37,7 @@
       "middlewares/*": ["src/middlewares/*"],
       "models/*": ["src/models/*"],
       "routes/*": ["src/routes/*"],
-      "src/utils/*": ["src/utils/*"]
+      "utils/*": ["src/utils/*"]
     }
   },
   "include": ["src/*", "src/**/*"],
