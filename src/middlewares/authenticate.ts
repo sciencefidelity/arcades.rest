@@ -1,5 +1,5 @@
 import { compare } from "bcryptjs"
-import { User } from "../models/userSchema"
+import { User } from "models/userSchema"
 
 const Authenticate = (username: string, password: string): Promise<unknown> => {
   return new Promise((resolve, reject) => {

@@ -1,7 +1,6 @@
 import jsonwebtoken from "jsonwebtoken"
 import Router from "koa-router"
 import _ from "underscore"
-
 import { bcryptHash } from "middlewares/hash"
 import Authenticate from "middlewares/authenticate"
 import jwt from "middlewares/jwt"

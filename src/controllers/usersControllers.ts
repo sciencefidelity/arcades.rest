@@ -1,5 +1,5 @@
 import Koa from "koa"
-import { User } from "../models/userSchema"
+import { User } from "models/userSchema"
 
 class UsersControllers {
   async find(ctx: Koa.ParameterizedContext) {
