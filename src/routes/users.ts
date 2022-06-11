@@ -167,7 +167,7 @@ router.post("/login", async (ctx, _next) => {
           expiresIn: "1d"
         }),
         message: "authentication successful",
-        user: user
+        user
       }
     }
   } catch (err) {
