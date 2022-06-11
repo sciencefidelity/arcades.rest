@@ -1,6 +1,6 @@
 import glob from "glob"
 
-type Routes = string[]
+type Routes = string[];
 
 export const RoutesLoader = (dirname: string): Promise<Routes> => {
   return new Promise((resolve, reject) => {
