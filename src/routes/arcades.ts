@@ -14,6 +14,23 @@ router.get("/", async (ctx, _next) => {
   }
 })
 
+// arcade by id
+router.post("/:id", async (ctx, _next) => {
+  const id = ctx.params.id
+  try {
+    const arcade = await Arcade.findOne({ id })
+    if (!arcade) {
+      ctx.throw(404)
+    }
+    ctx.body = arcade
+  } catch (err) {
+    if (err.name === "CastError" || err.name === "NotFoundError") {
+      ctx.throw(404, `arcade with the id ${ctx.params.id} not found`)
+    }
+    ctx.throw(500)
+  }
+})
+
 // add an arcade
 router.post("/", jwt, async (ctx, _next) => {
   const { index } = ctx.request.body
