@@ -26,6 +26,7 @@
       "koa-session",
       "koa-static",
       "koa-static-cache",
+      "module-alias",
       "mongoose",
       "node",
       "pug",
