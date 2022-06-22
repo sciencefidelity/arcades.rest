@@ -24,7 +24,7 @@
     "fix:eslint": "eslint --fix \"**/*.{ts,js}\"",
     "fix:prettier": "prettier --write \"**/*.{ts,js,json,md,yml}\"",
     "prebuild": "yarn fix",
-    "build": "tsc",
+    "build": "tsc && tsc-alias",
     "prestart": "yarn build",
     "start": "node .",
     "test": "jest"
@@ -47,6 +47,7 @@
     "koa-router": "^10.1.1",
     "module-alias": "^2.2.2",
     "mongoose": "^6.3.6",
+    "tsc-alias": "^1.6.11",
     "underscore": "^1.13.4"
   },
   "devDependencies": {
