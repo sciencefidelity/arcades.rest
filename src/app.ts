@@ -47,9 +47,11 @@ app
   .use(arcadesRoute.allowedMethods())
   .use(usersRoute.routes())
   .use(usersRoute.allowedMethods())
-  .use(error({
-    preFormat: err => Object.assign({}, err)
-  }))
+  .use(
+    error({
+      preFormat: err => Object.assign({}, err)
+    })
+  )
 
 // start server
 app.listen(port, () => {
