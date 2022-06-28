@@ -10,7 +10,12 @@ router.get("/", async (ctx, _next) => {
     ctx.body = await Arcade.find({})
     if (!ctx.body[0]) ctx.throw(404)
   } catch (err) {
-    ctx.status = err.status || 500
+    if (err instanceof Error) {
+      if (err.name === "CastError" || err.name === "NotFoundError") {
+        ctx.throw(404, `arcade with the id ${ctx.params.id} not found`)
+      }
+    }
+    ctx.throw(500)
   }
 })
 
@@ -24,8 +29,10 @@ router.post("/:id", async (ctx, _next) => {
     }
     ctx.body = arcade
   } catch (err) {
-    if (err.name === "CastError" || err.name === "NotFoundError") {
-      ctx.throw(404, `arcade with the id ${ctx.params.id} not found`)
+    if (err instanceof Error) {
+      if (err.name === "CastError" || err.name === "NotFoundError") {
+        ctx.throw(404, `arcade with the id ${ctx.params.id} not found`)
+      }
     }
     ctx.throw(500)
   }
@@ -64,8 +71,10 @@ router.post("/find", async (ctx, _next) => {
     }
     ctx.body = arcade
   } catch (err) {
-    if (err.name === "CastError" || err.name === "NotFoundError") {
-      ctx.throw(404, errorMessage)
+    if (err instanceof Error) {
+      if (err.name === "CastError" || err.name === "NotFoundError") {
+        ctx.throw(404, errorMessage)
+      }
     }
     ctx.throw(500)
   }
@@ -80,8 +89,10 @@ router.delete("/:id", jwt, async (ctx, _next) => {
     }
     ctx.body = user
   } catch (err) {
-    if (err.name === "CastError" || err.name === "NotFoundError") {
-      ctx.throw(404, `arcade with the id ${ctx.params.id} not found`)
+    if (err instanceof Error) {
+      if (err.name === "CastError" || err.name === "NotFoundError") {
+        ctx.throw(404, `arcade with the id ${ctx.params.id} not found`)
+      }
     }
     ctx.throw(500)
   }
