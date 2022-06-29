@@ -14,7 +14,7 @@ router.get("/", jwt, async (ctx, _next) => {
     ctx.body = await User.find({})
     if (!ctx.body[0]) ctx.throw(404)
   } catch (err) {
-    ctx.status = err.status || 500
+    ctx.status = 500
   }
 })
 
@@ -27,8 +27,10 @@ router.get("/:id", jwt, async (ctx, _next) => {
     }
     ctx.body = user
   } catch (err) {
-    if (err.name === "CastError" || err.name === "NotFoundError") {
-      ctx.throw(404, `user with the id ${ctx.params.id} not found`)
+    if (err instanceof Error) {
+      if (err.name === "CastError" || err.name === "NotFoundError") {
+        ctx.throw(404, `user with the id ${ctx.params.id} not found`)
+      }
     }
     ctx.throw(500)
   }
@@ -43,8 +45,10 @@ router.get("/username/:name", jwt, async (ctx, _next) => {
     }
     ctx.body = user
   } catch (err) {
-    if (err.name === "CastError" || err.name === "NotFoundError") {
-      ctx.throw(404, `username ${ctx.params.name} not found`)
+    if (err instanceof Error) {
+      if (err.name === "CastError" || err.name === "NotFoundError") {
+        ctx.throw(404, `username ${ctx.params.name} not found`)
+      }
     }
     ctx.throw(500)
   }
@@ -64,8 +68,10 @@ router.post("/find", jwt, async (ctx, _next) => {
     }
     ctx.body = user
   } catch (err) {
-    if (err.name === "CastError" || err.name === "NotFoundError") {
-      ctx.throw(404, errorMessage)
+    if (err instanceof Error) {
+      if (err.name === "CastError" || err.name === "NotFoundError") {
+        ctx.throw(404, errorMessage)
+      }
     }
     ctx.throw(500)
   }
@@ -103,8 +109,10 @@ router.put("/:id", jwt, async (ctx, _next) => {
     }
     ctx.body = await User.findById(ctx.params.id)
   } catch (err) {
-    if (err.name === "CastError" || err.name === "NotFoundError") {
-      ctx.throw(404, `user with the id ${ctx.params.id} not found`)
+    if (err instanceof Error) {
+      if (err.name === "CastError" || err.name === "NotFoundError") {
+        ctx.throw(404, `user with the id ${ctx.params.id} not found`)
+      }
     }
     ctx.throw(500)
   }
@@ -119,8 +127,10 @@ router.delete("/:id", jwt, async (ctx, _next) => {
     }
     ctx.body = user
   } catch (err) {
-    if (err.name === "CastError" || err.name === "NotFoundError") {
-      ctx.throw(404, `user with the id ${ctx.params.id} not found`)
+    if (err instanceof Error) {
+      if (err.name === "CastError" || err.name === "NotFoundError") {
+        ctx.throw(404, `user with the id ${ctx.params.id} not found`)
+      }
     }
     ctx.throw(500)
   }
@@ -146,8 +156,10 @@ router.put("/", jwt, async (ctx, _next) => {
     }
     ctx.body = user
   } catch (err) {
-    if (err.name === "CastError" || err.name === "NotFoundError") {
-      ctx.throw(404, errorMessage)
+    if (err instanceof Error) {
+      if (err.name === "CastError" || err.name === "NotFoundError") {
+        ctx.throw(404, errorMessage)
+      }
     }
     ctx.throw(500)
   }
