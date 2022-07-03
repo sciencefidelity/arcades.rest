@@ -14,7 +14,7 @@ dotenv.config({ path: ".env" })
 // conect to DB
 const connectionString = process.env.MONGO_ATLAS_STRING
 if (connectionString) {
-	Mongoose.connect(connectionString)
+  Mongoose.connect(connectionString)
 }
 Mongoose.connection.on("error", console.error)
 
@@ -26,35 +26,35 @@ const port = process.env.PORT || 3000
 let address: string
 
 networkInterfaces().en0?.filter(details => {
-	if (details.family === "IPv4") {
-		address = details.address
-	}
-	return address
+  if (details.family === "IPv4") {
+    address = details.address
+  }
+  return address
 })
 
 app.use(
-	koaBody({
-		formidable: { uploadDir: "./uploads" },
-		multipart: true,
-		urlencoded: true
-	})
+  koaBody({
+    formidable: { uploadDir: "./uploads" },
+    multipart: true,
+    urlencoded: true
+  })
 )
 
 app
-	.use(mainRoute.routes())
-	.use(mainRoute.allowedMethods())
-	.use(arcadesRoute.routes())
-	.use(arcadesRoute.allowedMethods())
-	.use(usersRoute.routes())
-	.use(usersRoute.allowedMethods())
-	.use(
-		error({
-			preFormat: err => Object.assign({}, err)
-		})
-	)
+  .use(mainRoute.routes())
+  .use(mainRoute.allowedMethods())
+  .use(arcadesRoute.routes())
+  .use(arcadesRoute.allowedMethods())
+  .use(usersRoute.routes())
+  .use(usersRoute.allowedMethods())
+  .use(
+    error({
+      preFormat: err => Object.assign({}, err)
+    })
+  )
 
 // start server
 app.listen(port, () => {
-	console.log(`listening at http://localhost:${port}`)
-	console.log(`local network http://${address}:${port}`)
+  console.log(`listening at http://localhost:${port}`)
+  console.log(`local network http://${address}:${port}`)
 })

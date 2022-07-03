@@ -1,13 +1,13 @@
 {
-	"_id": "",
-	"convolute": {
-		"letter": "A",
-		"title": "Arcades, Magasins de Nouveautés, Sales Clerks"
-	},
-	"text": {
-		"p1": "\"In speaking of the inner boulevards,\" says the Illustrated Guide to Paris, a complete picture of the city on the Seine and it's environs from the year 1852, \"we have made mention again and again of the arcades which open onto them. These arcades, a recent invention of industrial luxury, are glass-roofed, marble paneled corridors extending through whole blocks of buildings, whose owners have joined together for such enterprises. Lining both sides of these corridors, which get their light from above, are the most elegent shops, so that the arcade is a city, a world in miniature, in which customers will find everything they need. During sudden rainshowers, the arcades are a place of refuge for the unprepared, to whom they offer a secure, if restricted, promenade–one from which the merchants benefit.",
-		"p2": "This passage is the locus classicus for the presentations of the arcades; for not only do the divigations on the flâneur and the weather of develop out of it, but, also, what there is to be said about the construction of the arcades, in an economic and architectural vein, would have a place here."
-	},
-	"index": "[A1,1]",
-	"tags": ["Flâneur", "Weather"]
+  "_id": "",
+  "convolute": {
+    "letter": "A",
+    "title": "Arcades, Magasins de Nouveautés, Sales Clerks"
+  },
+  "text": {
+    "p1": "\"In speaking of the inner boulevards,\" says the Illustrated Guide to Paris, a complete picture of the city on the Seine and it's environs from the year 1852, \"we have made mention again and again of the arcades which open onto them. These arcades, a recent invention of industrial luxury, are glass-roofed, marble paneled corridors extending through whole blocks of buildings, whose owners have joined together for such enterprises. Lining both sides of these corridors, which get their light from above, are the most elegent shops, so that the arcade is a city, a world in miniature, in which customers will find everything they need. During sudden rainshowers, the arcades are a place of refuge for the unprepared, to whom they offer a secure, if restricted, promenade–one from which the merchants benefit.",
+    "p2": "This passage is the locus classicus for the presentations of the arcades; for not only do the divigations on the flâneur and the weather of develop out of it, but, also, what there is to be said about the construction of the arcades, in an economic and architectural vein, would have a place here."
+  },
+  "index": "[A1,1]",
+  "tags": ["Flâneur", "Weather"]
 }
