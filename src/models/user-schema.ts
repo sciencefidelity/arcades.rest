@@ -1,15 +1,15 @@
-import { model, Model, Document, Schema } from "mongoose"
+import { model, Document, Schema } from "mongoose";
 
-interface IUser extends Document {
-  firstName: string
-  lastName: string
-  username: string
-  email: string
-  password: string
-  avatar?: string
+export interface IUser extends Document {
+  firstName: string;
+  lastName: string;
+  username: string;
+  email: string;
+  password: string;
+  avatar?: string;
 }
 
-const UserSchema: Schema = new Schema(
+export const UserSchema: Schema = new Schema(
   {
     firstName: {
       type: String,
@@ -40,6 +40,6 @@ const UserSchema: Schema = new Schema(
     avatar: String,
   },
   { timestamps: { createdAt: "createdAt" } }
-)
+);
 
-export const User: Model<IUser> = model("User", UserSchema)
+export const User = model<IUser>("User", UserSchema);

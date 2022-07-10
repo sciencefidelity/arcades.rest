@@ -1,19 +1,19 @@
-import { model, Model, Document, Schema } from "mongoose"
+import { model, Document, Schema } from "mongoose";
 
-interface IArcade extends Document {
+export interface IArcade extends Document {
   convolute: {
-    letter: string
-    title: string
-  }
+    letter: string;
+    title: string;
+  };
   text?: {
-    p1?: string
-    p2?: string
-  }
-  index: string
-  tags?: string[]
+    p1?: string;
+    p2?: string;
+  };
+  index: string;
+  tags?: string[];
 }
 
-const ArcadesSchema: Schema = new Schema(
+export const ArcadesSchema: Schema = new Schema(
   {
     convolute: {
       type: Object,
@@ -35,6 +35,6 @@ const ArcadesSchema: Schema = new Schema(
     },
   },
   { timestamps: { createdAt: "createdAt" } }
-)
+);
 
-export const Arcade: Model<IArcade> = model("Arcade", ArcadesSchema)
+export const Arcade = model<IArcade>("Arcade", ArcadesSchema);

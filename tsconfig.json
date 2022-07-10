@@ -4,8 +4,8 @@
   "compilerOptions": {
     "strict": true,
     "outDir": ".dist",
-    "module": "CommonJS",
-    "target": "ES6",
+    "module": "NodeNext",
+    "target": "es2017",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "sourceMap": true,

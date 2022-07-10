@@ -1,194 +1,191 @@
-import jsonwebtoken from "jsonwebtoken"
-import Router from "koa-router"
-import _ from "underscore"
-import { bcryptHash } from "middlewares/hash"
-import Authenticate from "middlewares/authenticate"
-import jwt from "middlewares/jwt"
-import { User } from "models/userSchema"
+import jsonwebtoken from "jsonwebtoken";
+import Router from "koa-router";
+import _ from "underscore";
+import { bcryptHash } from "middlewares/hash";
+import Authenticate from "middlewares/authenticate";
+import jwt from "middlewares/jwt";
+import { IUser, User } from "src/models/user-schema";
 
-const router = new Router({ prefix: "/users" })
+const router = new Router({ prefix: "/users" });
 
 // get all users
-router.get("/", jwt, async (ctx, _next) => {
+router.get("/", jwt, async (context) => {
   try {
-    ctx.body = await User.find({})
-    if (!ctx.body[0]) ctx.throw(404)
-  } catch (err) {
-    ctx.status = 500
+    context.body = await User.find({});
+    if (!context.body) context.throw(404);
+  } catch (error) {
+    context.status = 500;
+    console.error(error);
   }
-})
+});
 
 // find a user by id
-router.get("/:id", jwt, async (ctx) => {
+router.get("/:id", jwt, async (context) => {
   try {
-    const user = await User.findById(ctx.params.id)
+    const user = await User.findById(context.params.id);
     if (!user) {
-      ctx.throw(404)
+      context.throw(404);
     }
-    ctx.body = user
-  } catch (err) {
-    if (err instanceof Error) {
-      if (err.name === "CastError" || err.name === "NotFoundError") {
-        ctx.throw(404, `user with the id ${ctx.params.id} not found`)
-      }
+    context.body = user;
+  } catch (error) {
+    if (error instanceof Error) {
+      context.throw(404, `user with the id ${context.params.id} not found`);
     }
-    ctx.throw(500)
+    context.throw(500);
   }
-})
+});
 
 // find by username in url
-router.get("/username/:name", jwt, async (ctx) => {
+router.get("/username/:name", jwt, async (context) => {
   try {
-    const user = await User.findOne({ username: ctx.params.name })
+    const user = await User.findOne({ username: context.params.name });
     if (!user) {
-      ctx.throw(404)
+      context.throw(404);
     }
-    ctx.body = user
-  } catch (err) {
-    if (err instanceof Error) {
-      if (err.name === "CastError" || err.name === "NotFoundError") {
-        ctx.throw(404, `username ${ctx.params.name} not found`)
-      }
+    context.body = user;
+  } catch (error) {
+    if (error instanceof Error) {
+      context.throw(404, `username ${context.params.name} not found`);
     }
-    ctx.throw(500)
+    context.throw(500);
   }
-})
+});
 
 // find by username or email in json
-router.post("/find", jwt, async (ctx) => {
-  const { username, email } = ctx.request.body
-  let errorMessage = `user ${username} not found`
+router.post("/find", jwt, async (context) => {
+  const { username, email } = context.request.body as IUser;
+  let errorMessage = `user ${username} not found`;
   if (!username) {
-    errorMessage = `email address ${email} not found`
+    errorMessage = `email address ${email} not found`;
   }
   try {
-    const user = await User.findOne({ $or: [{ username }, { email }] })
+    const user = await User.findOne({ $or: [{ username }, { email }] });
     if (!user) {
-      ctx.throw(404, "not found")
+      context.throw(404, "not found");
     }
-    ctx.body = user
-  } catch (err) {
-    if (err instanceof Error) {
-      if (err.name === "CastError" || err.name === "NotFoundError") {
-        ctx.throw(404, errorMessage)
-      }
+    context.body = user;
+  } catch (error) {
+    if (error instanceof Error) {
+      context.throw(404, errorMessage);
     }
-    ctx.throw(500)
+    context.throw(500);
   }
-})
+});
 
 // add a user
-router.post("/register", async (ctx, _next) => {
-  let { username, email, password } = ctx.request.body
+router.post("/register", async (context) => {
+  const { username, email } = context.request.body as IUser;
+  let { password } = context.request.body as IUser;
   // check if data is application/json
-  if (!ctx.is("application/json")) {
-    ctx.throw(412, "content-Type must be application/json")
+  if (!context.is("application/json")) {
+    context.throw(412, "content-Type must be application/json");
   }
   try {
     // check if user exists before creating
-    let user = await User.findOne({ $or: [{ username }, { email }] })
+    let user = await User.findOne({ $or: [{ username }, { email }] });
     // if user doesn't exist - create user
     if (!user) {
-      password = await bcryptHash(password)
-      user = await new User(_.extend(ctx.request.body, { password })).save()
-      ctx.status = 201
+      password = await bcryptHash(password);
+      user = await new User(
+        _.extend(context.request.body, { password })
+      ).save();
+      context.status = 201;
     }
-    ctx.body = user
+    context.body = user;
     // error handling
-  } catch (err) {
-    ctx.throw(422, "missing content")
+  } catch (error) {
+    context.throw(422, "missing content");
+    console.error(error);
   }
-})
+});
 
 // update a user
-router.put("/:id", jwt, async (ctx, _next) => {
+router.put("/:id", jwt, async (context) => {
   try {
-    const user = await User.findByIdAndUpdate(ctx.params.id, ctx.request.body)
+    const user = await User.findByIdAndUpdate(
+      context.params.id,
+      context.request.body as IUser
+    );
     if (!user) {
-      ctx.throw(404)
+      context.throw(404);
     }
-    ctx.body = await User.findById(ctx.params.id)
-  } catch (err) {
-    if (err instanceof Error) {
-      if (err.name === "CastError" || err.name === "NotFoundError") {
-        ctx.throw(404, `user with the id ${ctx.params.id} not found`)
-      }
+    context.body = await User.findById(context.params.id);
+  } catch (error) {
+    if (error instanceof Error) {
+      context.throw(404, `user with the id ${context.params.id} not found`);
     }
-    ctx.throw(500)
+    context.throw(500);
   }
-})
+});
 
 // delete a user
-router.delete("/:id", jwt, async (ctx, _next) => {
+router.delete("/:id", jwt, async (context) => {
   try {
-    const user = await User.findByIdAndRemove(ctx.params.id)
+    const user = await User.findByIdAndRemove(context.params.id);
     if (!user) {
-      ctx.throw(404)
+      context.throw(404);
     }
-    ctx.body = user
-  } catch (err) {
-    if (err instanceof Error) {
-      if (err.name === "CastError" || err.name === "NotFoundError") {
-        ctx.throw(404, `user with the id ${ctx.params.id} not found`)
-      }
+    context.body = user;
+  } catch (error) {
+    if (error instanceof Error) {
+      context.throw(404, `user with the id ${context.params.id} not found`);
     }
-    ctx.throw(500)
+    context.throw(500);
   }
-})
+});
 
 // delete a user by username or email
-router.put("/", jwt, async (ctx, _next) => {
-  const { username, email } = ctx.request.body
-  let errorMessage = `user ${username} not found`
+router.put("/", jwt, async (context) => {
+  const { username, email } = context.request.body as IUser;
+  let errorMessage = `user ${username} not found`;
   if (!username) {
-    errorMessage = `email address ${email} not found`
+    errorMessage = `email address ${email} not found`;
   }
   // check if data is application/json
-  if (!ctx.is("application/json")) {
-    ctx.throw(412, "content-Type must be application/json")
+  if (!context.is("application/json")) {
+    context.throw(412, "content-Type must be application/json");
   }
   try {
     const user = await User.findOneAndRemove({
       $or: [{ username }, { email }],
-    })
+    });
     if (!user) {
-      ctx.throw(404)
+      context.throw(404);
     }
-    ctx.body = user
-  } catch (err) {
-    if (err instanceof Error) {
-      if (err.name === "CastError" || err.name === "NotFoundError") {
-        ctx.throw(404, errorMessage)
-      }
+    context.body = user;
+  } catch (error) {
+    if (error instanceof Error) {
+      context.throw(404, errorMessage);
     }
-    ctx.throw(500)
+    context.throw(500);
   }
-})
+});
 
 // auth user
-router.post("/login", async (ctx, _next) => {
-  const { username, password } = ctx.request.body
-  const secret = process.env.JWT_SECRET
+router.post("/login", async (context) => {
+  const { username, password } = context.request.body as IUser;
+  const secret = process.env.JWT_SECRET;
   try {
-    const user = await Authenticate(username, password)
+    const user = await Authenticate(username, password);
     // create jwt
-    ctx.status = 200
+    context.status = 200;
     if (secret) {
-      ctx.body = {
+      context.body = {
         token: jsonwebtoken.sign({ role: "admin" }, secret, {
           expiresIn: "1d",
         }),
         message: "authentication successful",
         user,
-      }
+      };
     }
-  } catch (err) {
+  } catch (error) {
     // user unauthorised
-    ctx.status = 401
-    ctx.body = {
+    context.status = 401;
+    context.body = {
       message: "unauthorised",
-    }
+    };
+    console.error(error);
   }
-})
+});
 
-export default router
+export default router;
