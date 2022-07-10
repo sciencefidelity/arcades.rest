@@ -4,7 +4,7 @@ import _ from "underscore";
 import { bcryptHash } from "middlewares/hash";
 import { compare } from "bcryptjs";
 import jwt from "middlewares/jwt";
-import { IUser, User } from "src/models/user-schema";
+import { IUser, User } from "models/user-schema";
 
 const router = new Router({ prefix: "/users" });
 

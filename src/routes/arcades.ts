@@ -1,5 +1,5 @@
 import Router from "koa-router";
-import { Arcade, IArcade } from "src/models/arcades-schema";
+import { Arcade, IArcade } from "models/arcades-schema";
 import jwt from "middlewares/jwt";
 
 const router = new Router({ prefix: "/arcades" });
