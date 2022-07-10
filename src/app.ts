@@ -1,4 +1,4 @@
-import * as dotenv from "dotenv";
+import { config } from "dotenv";
 import "module-alias/register";
 import Koa from "koa";
 import koaBody from "koa-body";
@@ -9,7 +9,7 @@ import arcadesRoute from "routes/arcades";
 import mainRoute from "routes/index";
 import usersRoute from "routes/users";
 
-dotenv.config({ path: ".env" });
+config({ path: ".env" });
 
 // conect to DB
 const connectionString = process.env.MONGO_ATLAS_STRING;
