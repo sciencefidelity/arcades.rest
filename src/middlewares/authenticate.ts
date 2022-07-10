@@ -1,29 +1,27 @@
-import { compare } from "bcryptjs"
-import { User } from "models/userSchema"
+import { compare } from "bcryptjs";
+import { User } from "src/models/user-schema";
 
-const Authenticate = (username: string, password: string): Promise<unknown> => new Promise((resolve, reject) => {
-    ;(async () => {
+const Authenticate = async (username: string, password: string) => (
       try {
         // get user by email
-        const user = await User.findOne({ username })
+        const user = await User.findOne({ username });
         if (!user) {
-          throw new Error("authentication failed")
+          throw new Error("authentication failed");
         }
         // match password
-        compare(password, user.password, (err, isMatch) => {
-          if (err) throw err
+        compare(password, user.password, (error, isMatch) => {
+          if (error) throw error;
           if (isMatch) {
-            resolve(user)
+            resolve(user);
           } else {
             // password didn't match
-            reject(new Error("authentication failed"))
+            reject(new Error("authentication failed"));
           }
-        })
-      } catch (err) {
+        });
+      } catch (error) {
         // email not found
-        reject(new Error("authentication failed"))
+        reject(new Error(`authentication failed, ${error}`));
       }
-    })()
-  })
+  );
 
-export default Authenticate
+export default Authenticate;

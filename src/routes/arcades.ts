@@ -1,17 +1,18 @@
 import Router from "koa-router";
-import { Arcade } from "src/models/arcades-schema";
+import { Arcade, IArcade } from "src/models/arcades-schema";
 import jwt from "middlewares/jwt";
 
 const router = new Router({ prefix: "/arcades" });
 
 // get all arcades
 router.get("/", async (context) => {
+  const { id } = context.params;
   try {
     context.body = await Arcade.find({});
     if (!context.body) context.throw(404);
   } catch (error) {
     if (error instanceof Error) {
-      context.throw(404, `arcade with the id ${ctx.params.id} not found`);
+      context.throw(404, `arcade with the id ${id} not found`);
     }
     context.throw(500);
   }
@@ -30,67 +31,65 @@ router.post("/:id", async (context) => {
     if (error instanceof Error) {
       context.throw(404, `arcade with the id ${id} not found`);
     }
-    ctx.throw(500);
+    context.throw(500);
   }
 });
 
 // add an arcade
-router.post("/", jwt, async (ctx, _next) => {
-  const { index } = ctx.request.body;
+router.post("/", jwt, async (context) => {
+  const { index } = context.request.body as IArcade;
   // check if data is application/json
-  if (!ctx.is("application/json")) {
-    ctx.throw(412, "content-Type must be application/json");
+  if (!context.is("application/json")) {
+    context.throw(412, "content-Type must be application/json");
   }
   try {
     // check if the arcade exists before creating
     let arcade = await Arcade.findOne({ index });
     // if arcade doesn't exist - create arcade
     if (!arcade) {
-      arcade = await new Arcade(ctx.request.body).save();
-      ctx.status = 201;
+      arcade = await new Arcade(context.request.body).save();
+      context.status = 201;
     }
-    ctx.body = arcade;
+    context.body = arcade;
     // error handling
-  } catch (err) {
-    ctx.throw(422, "missing content");
+  } catch (error) {
+    context.throw(422, "missing content");
+    console.error(error);
   }
 });
 
 // find by tag in json
-router.post("/find", async (ctx, _next) => {
-  const { tags } = ctx.request.body;
-  const errorMessage = `${tags} not found`;
+router.post("/find", async (context) => {
+  const { tag } = context.request.body as { tag: string };
+  const errorMessage = `${tag} not found`;
   try {
-    const arcade = await Arcade.findOne({ tags });
+    const arcade = await Arcade.findOne({ tag });
     if (!arcade) {
-      ctx.throw(404);
+      context.throw(404);
     }
-    ctx.body = arcade;
-  } catch (err) {
-    if (err instanceof Error) {
-      if (err.name === "CastError" || err.name === "NotFoundError") {
-        ctx.throw(404, errorMessage);
-      }
+    context.body = arcade;
+  } catch (error) {
+    if (error instanceof Error) {
+      context.throw(404, errorMessage);
     }
-    ctx.throw(500);
+    context.throw(500);
   }
 });
 
 // delete an arcade
-router.delete("/:id", jwt, async (ctx, _next) => {
+router.delete("/:id", jwt, async (context) => {
+  const { id } = context.params;
   try {
-    const user = await Arcade.findByIdAndRemove(ctx.params.id);
+    const user = await Arcade.findByIdAndRemove(id);
     if (!user) {
-      ctx.throw(404);
+      context.throw(404);
     }
-    ctx.body = user;
-  } catch (err) {
-    if (err instanceof Error) {
-      if (err.name === "CastError" || err.name === "NotFoundError") {
-        ctx.throw(404, `arcade with the id ${ctx.params.id} not found`);
-      }
+    context.body = user;
+  } catch (error) {
+    if (error instanceof Error) {
+      context.throw(404, `arcade with the id ${id} not found`);
     }
-    ctx.throw(500);
+    context.throw(500);
   }
 });
 
