@@ -2,7 +2,7 @@ import jsonwebtoken from "jsonwebtoken";
 import Router from "koa-router";
 import _ from "underscore";
 import { bcryptHash } from "middlewares/hash";
-import Authenticate from "middlewares/authenticate";
+import { compare } from "bcryptjs";
 import jwt from "middlewares/jwt";
 import { IUser, User } from "src/models/user-schema";
 
@@ -166,7 +166,16 @@ router.post("/login", async (context) => {
   const { username, password } = context.request.body as IUser;
   const secret = process.env.JWT_SECRET;
   try {
-    const user = await Authenticate(username, password);
+    const user = await User.findOne({ username });
+    if (!user) {
+      throw new Error(`User ${username} does not exist`);
+    }
+    const cmp = await compare(password, user.password);
+    if (cmp) {
+      console.log("Authorisation successful");
+    } else {
+      console.error("Wrong username or password");
+    }
     // create jwt
     context.status = 200;
     if (secret) {
