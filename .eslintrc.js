@@ -27,7 +27,19 @@ module.exports = {
     project: "./tsconfig.json",
   },
   rules: {
+    // console is preferred in a Node project
     "no-console": "off",
+    // https://basarat.gitbook.io/typescript/main-1/defaultisbad
+    "import/prefer-default-export": "off",
+    "import/no-default-export": "error",
+    // It's not accurate in the monorepo style
+    "import/no-extraneous-dependencies": "off",
+    // Allow most functions to rely on type inference
+    // @typescript-eslint/explicit-module-boundary-types
+    // will ensure exports are typed
+    "@typescript-eslint/explicit-function-return-type": "off",
+    // Airbnb prefers forEach
+    "unicorn/no-array-for-each": "off",
   },
   overrides: [
     {
