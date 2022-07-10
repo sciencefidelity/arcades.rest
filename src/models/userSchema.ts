@@ -14,30 +14,30 @@ const UserSchema: Schema = new Schema(
     firstName: {
       type: String,
       required: true,
-      strict: true
+      strict: true,
     },
     lastName: {
       type: String,
       required: true,
-      strict: true
+      strict: true,
     },
     username: {
       type: String,
       required: true,
-      strict: true
+      strict: true,
     },
     email: {
       type: String,
       required: true,
       strict: true,
-      trim: true
+      trim: true,
     },
     password: {
       type: String,
       required: true,
-      strict: true
+      strict: true,
     },
-    avatar: String
+    avatar: String,
   },
   { timestamps: { createdAt: "createdAt" } }
 )

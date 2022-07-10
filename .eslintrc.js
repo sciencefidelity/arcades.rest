@@ -1,41 +1,20 @@
 module.exports = {
-  env: {
-    browser: true,
-    es2021: true,
-    node: true
-  },
+  plugins: ["@typescript-eslint"],
   extends: [
-    "eslint:recommended",
+    "airbnb-base",
+    "airbnb-typescript/base",
     "plugin:@typescript-eslint/recommended",
-    "koa",
-    "prettier"
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "prettier",
   ],
+  env: {
+    node: true,
+    browser: true,
+  },
   parser: "@typescript-eslint/parser",
   parserOptions: {
-    ecmaVersion: 12,
-    sourceType: "module"
+    sourceType: "module",
+    tsconfigRootDir: __dirname,
+    project: "./tsconfig.json",
   },
-  plugins: ["@typescript-eslint"],
-  rules: {
-    indent: "off",
-    "linebreak-style": ["error", "unix"],
-    quotes: "off",
-    semi: "off",
-    "space-before-function-paren": [
-      "error",
-      {
-        anonymous: "always",
-        named: "never",
-        asyncArrow: "always"
-      }
-    ],
-    "no-unused-vars": [
-      "warn",
-      { varsIgnorePattern: "[iI]gnored", argsIgnorePattern: "^_" }
-    ],
-    "@typescript-eslint/no-unused-vars": [
-      "warn",
-      { varsIgnorePattern: "[iI]gnored", argsIgnorePattern: "^_" }
-    ]
-  }
 }

@@ -21,7 +21,7 @@ router.get("/", async (ctx, _next) => {
 
 // arcade by id
 router.post("/:id", async (ctx, _next) => {
-  const id = ctx.params.id
+  const {id} = ctx.params
   try {
     const arcade = await Arcade.findOne({ id })
     if (!arcade) {

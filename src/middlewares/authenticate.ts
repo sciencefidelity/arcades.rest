@@ -1,8 +1,7 @@
 import { compare } from "bcryptjs"
 import { User } from "models/userSchema"
 
-const Authenticate = (username: string, password: string): Promise<unknown> => {
-  return new Promise((resolve, reject) => {
+const Authenticate = (username: string, password: string): Promise<unknown> => new Promise((resolve, reject) => {
     ;(async () => {
       try {
         // get user by email
@@ -26,6 +25,5 @@ const Authenticate = (username: string, password: string): Promise<unknown> => {
       }
     })()
   })
-}
 
 export default Authenticate

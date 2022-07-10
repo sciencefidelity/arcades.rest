@@ -19,7 +19,7 @@ router.get("/", jwt, async (ctx, _next) => {
 })
 
 // find a user by id
-router.get("/:id", jwt, async (ctx, _next) => {
+router.get("/:id", jwt, async (ctx) => {
   try {
     const user = await User.findById(ctx.params.id)
     if (!user) {
@@ -37,7 +37,7 @@ router.get("/:id", jwt, async (ctx, _next) => {
 })
 
 // find by username in url
-router.get("/username/:name", jwt, async (ctx, _next) => {
+router.get("/username/:name", jwt, async (ctx) => {
   try {
     const user = await User.findOne({ username: ctx.params.name })
     if (!user) {
@@ -55,7 +55,7 @@ router.get("/username/:name", jwt, async (ctx, _next) => {
 })
 
 // find by username or email in json
-router.post("/find", jwt, async (ctx, _next) => {
+router.post("/find", jwt, async (ctx) => {
   const { username, email } = ctx.request.body
   let errorMessage = `user ${username} not found`
   if (!username) {
@@ -149,7 +149,7 @@ router.put("/", jwt, async (ctx, _next) => {
   }
   try {
     const user = await User.findOneAndRemove({
-      $or: [{ username }, { email }]
+      $or: [{ username }, { email }],
     })
     if (!user) {
       ctx.throw(404)
@@ -176,17 +176,17 @@ router.post("/login", async (ctx, _next) => {
     if (secret) {
       ctx.body = {
         token: jsonwebtoken.sign({ role: "admin" }, secret, {
-          expiresIn: "1d"
+          expiresIn: "1d",
         }),
         message: "authentication successful",
-        user
+        user,
       }
     }
   } catch (err) {
     // user unauthorised
     ctx.status = 401
     ctx.body = {
-      message: "unauthorised"
+      message: "unauthorised",
     }
   }
 })

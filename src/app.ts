@@ -25,33 +25,28 @@ const port = process.env.PORT || 3000
 // get the local network address
 let address: string
 
-networkInterfaces().en0?.filter(details => {
+networkInterfaces().en0?.filter((details) => {
   if (details.family === "IPv4") {
     address = details.address
   }
   return address
 })
 
-app.use(
-  koaBody({
-    formidable: { uploadDir: "./uploads" },
-    multipart: true,
-    urlencoded: true
-  })
-)
-
 app
+  .use(
+    koaBody({
+      formidable: { uploadDir: "./uploads" },
+      multipart: true,
+      urlencoded: true,
+    })
+  )
   .use(mainRoute.routes())
   .use(mainRoute.allowedMethods())
   .use(arcadesRoute.routes())
   .use(arcadesRoute.allowedMethods())
   .use(usersRoute.routes())
   .use(usersRoute.allowedMethods())
-  .use(
-    error({
-      preFormat: err => Object.assign({}, err)
-    })
-  )
+  .use(error())
 
 // start server
 app.listen(port, () => {

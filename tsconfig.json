@@ -1,4 +1,6 @@
 {
+  "include": ["./**/*", "./**/.*"],
+  "exclude": ["./dist/**/*"],
   "compilerOptions": {
     "module": "commonjs",
     "target": "es6",
@@ -8,11 +10,10 @@
     "allowJs": true,
     "checkJs": false,
     "sourceMap": true,
-    "outDir": "dist",
+    "outDir": ".dist",
     "baseUrl": "./",
     "esModuleInterop": true,
     "experimentalDecorators": true,
-    // "useUnknownInCatchVariables": false,
     "types": [
       "bcryptjs",
       "glob",
@@ -33,12 +34,5 @@
       "routes/*": ["src/routes/*"],
       "utils/*": ["src/utils/*"]
     }
-  },
-  "include": ["src/*", "src/**/*"],
-  "exclude": [
-    "node_modules",
-    "./node_modules",
-    "./node_modules/*",
-    "./node_modules/@types/node/index.d.ts"
-  ]
+  }
 }
