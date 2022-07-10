@@ -8,6 +8,8 @@ package-lock.json
 yarn.lock
 
 # artifacts
+.dist
+.build
 dist
 build
 

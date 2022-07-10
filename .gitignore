@@ -1,19 +1,24 @@
 # node
 node_modules
 *.log
+*.bak
 
 # mac
 .DS_Store
-*.bak
+
+# local
+.env
 *.css
 *.css.map
-.env
 
 # linux
 tags
 
 # typescript
 dist
+build
+.dist
+.build
 
 # app
 uploads
