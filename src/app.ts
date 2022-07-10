@@ -14,7 +14,9 @@ dotenv.config({ path: ".env" });
 // conect to DB
 const connectionString = process.env.MONGO_ATLAS_STRING;
 if (connectionString) {
-  await Mongoose.connect(connectionString);
+  /* eslint-disable @typescript-eslint/no-floating-promises */
+  Mongoose.connect(connectionString);
+  /* eslint-enable @typescript-eslint/no-floating-promises */
 }
 Mongoose.connection.on("error", console.error);
 
